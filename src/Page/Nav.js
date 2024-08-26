@@ -18,7 +18,7 @@ const Nav = () => {
     }
   };
 
-  const categories = ['지역', '컨텐츠', '맛집', '레저', '뭐해'];
+  const categories = ['지역', '컨텐츠', '맛집', '레저', '기타'];
 
   return (
     <div className="flex justify-center items-center space-x-4 p-2 bg-white shadow-md">
