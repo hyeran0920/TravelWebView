@@ -1,0 +1,12 @@
+.layout-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* Viewport height */
+}
+
+.content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto; /* 필요 시 스크롤 가능 */
+}
