@@ -13,12 +13,15 @@ const Nav = () => {
     if (category === '지역') {
       navigate('/Main');
     }
-    if (category === '컨텐츠') {
-      navigate('/Contents');
+    if (category === '영화') {
+      navigate('/Movie');
+    }
+    if (category === '드라마') {
+      navigate('/Drama');
     }
   };
 
-  const categories = ['지역', '컨텐츠', '맛집', '레저', '기타'];
+  const categories = ['지역', '영화', '드라마', '맛집', '레저', '기타'];
 
   return (
     <div className="flex justify-center items-center space-x-4 p-2 bg-white shadow-md">

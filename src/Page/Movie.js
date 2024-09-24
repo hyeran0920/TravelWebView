@@ -1,15 +1,15 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import RecomContents from '../Component/RecomContents';
 import FamousContents from '../Component/FamousContents';
+import MovieContents from '../Component/MovieContents';
 
-const Contents = () => {
+const Movie = () => {
   return (
     <div>
       <FamousContents/>
-      <RecomContents/>
+      <MovieContents/>
     </div>
   );
 }
 
-export default Contents;
+export default Movie;
