@@ -8,6 +8,7 @@ const Food = lazy(() => import("../Page/Food"));
 const Movie = lazy(() => import("../Page/Movie"));
 const Drama = lazy(() => import("../Page/Drama"));
 const ContentLocationList = lazy(() => import("../Page/ContentLocationList"));
+const LocationInformation = lazy(() => import("../Page/LocationInformation"));
 
 const root = createBrowserRouter([
   {
@@ -65,6 +66,14 @@ const root = createBrowserRouter([
         <Layout>
           <ContentLocationList/>
         </Layout>
+      </Suspense>
+    )
+  },
+  {
+    path: "/InformationByPlace/:contentTitle/:placeName",
+    element: (
+      <Suspense fallback={<div>Loading...</div>}>
+          <LocationInformation/>
       </Suspense>
     )
   },

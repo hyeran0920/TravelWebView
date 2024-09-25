@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const ContentLocations = ({ contentTitle }) => {
   const [locations, setLocations] = useState([]);  // 촬영지 목록 상태
   const [loading, setLoading] = useState(true);    // 로딩 상태 관리
   const [error, setError] = useState(null);        // 에러 상태 추가
+  const navigate = useNavigate();  // useNavigate 사용
 
   useEffect(() => {
     setLoading(true);
@@ -37,6 +39,11 @@ const ContentLocations = ({ contentTitle }) => {
     return <p>No filming locations available for {contentTitle}.</p>;
   }
 
+  // 장소 박스를 클릭하면 해당 작품의 장소를 선택하고 페이지로 이동
+  const handlePlaceClick = (contentTitle, placeName) => {
+    navigate(`/InformationByPlace/${contentTitle}/${placeName}`); // 제목과 장소로 URL 이동
+  };
+
   return (
     <div className="p-5 mb-10">
     <h2 className="text-2xl font-bold mb-5"> # {contentTitle}</h2>
@@ -45,9 +52,10 @@ const ContentLocations = ({ contentTitle }) => {
       {locations.map((location, index) => (
         <div
           key={index}
-          className="bg-white shadow-md rounded-lg overflow-hidden h-40 p-5 flex flex-col justify-between"
+          onClick={() => handlePlaceClick(contentTitle, location.place_Name)} // contentTitle과 place_Name 전달
+          className="bg-white shadow-md rounded-lg overflow-hidden h-40 p-5 flex flex-col justify-between relative"
         >
-          <div className="text-left font-bold text-lg text-gray-800 ">
+          <div className="absolute bottom-0 left-0 p-5 text-left font-bold text-lg text-gray-800 ">
             {location.place_Name}
             <p className="text-sm text-gray-400 mt-1">
             {location.addr}
