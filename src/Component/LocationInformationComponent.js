@@ -7,12 +7,13 @@ const LocationInformationComponent = () => {
   const [locationData, setLocationData] = useState(null);  // 촬영지 데이터 상태 (단일 객체로 변경)
   const [loading, setLoading] = useState(true);    // 로딩 상태 관리
   const [error, setError] = useState(null);        // 에러 상태 추가
+  const [layerImage, setLayerImage] = useState(null); // Layer 이미지 상태
   const navigate = useNavigate();  // 뒤로 가기 버튼을 위한 useNavigate 추가
 
   useEffect(() => {
     setLoading(true);
-    
-    // Axios 요청으로 촬영지 데이터를 가져옴 (제목과 장소 기준으로 필터링)
+
+    // 촬영지 데이터를 가져옴 (제목과 장소 기준으로 필터링)
     axios.get(`http://localhost:8080/content/getInformationByTitleAndPlace?title=${contentTitle}&place=${placeName}`)
       .then(response => {
         setLocationData(response.data);  // 응답 데이터를 상태로 설정 (촬영지 정보)
@@ -23,7 +24,20 @@ const LocationInformationComponent = () => {
         setError("촬영지 정보 데이터를 가져오는 중 오류가 발생했습니다."); // 에러 메시지 설정
         setLoading(false);  // 에러 발생 시 로딩 종료
       });
-  }, [contentTitle, placeName]);  // contentTitle과 placeName이 변경될 때마다 데이터 호출
+
+    // 해당 장소에 대한 Layer 이미지 가져오기
+    axios.get(`http://localhost:8080/layer/all`)
+      .then(response => {
+        const matchedLayer = response.data.find(layer => layer.place_name === placeName); // 장소 이름이 같은 Layer 검색
+        if (matchedLayer) {
+          setLayerImage(`http://localhost:8080/layer/files/${matchedLayer.countNum}`); // countNum에 맞는 이미지 경로 설정
+        }
+      })
+      .catch(error => {
+        console.error("Layer 이미지를 가져오는 중 에러 발생!", error);
+      });
+    
+  }, [contentTitle, placeName]);
 
   // 로딩 중일 때 표시
   if (loading) {
@@ -42,13 +56,13 @@ const LocationInformationComponent = () => {
 
   // 촬영지 상세 데이터 렌더링
   return (
-    <div className="w-full h-screen bg-white shadow-lg rounded-lg overflow-hidden relative">
+<div className="w-full h-screen bg-gray-300 shadow-lg rounded-lg overflow-hidden relative">
       
       {/* 뒤로 가기 버튼 */}
       <button
         onClick={() => navigate(-1)}  // 뒤로 가기 기능
         className="absolute top-4 left-4 bg-gray-100 text-black-500 rounded-full p-2 shadow hover:bg-gray-300 z-50"  // z-index 추가
-        style={{ width: '50px', height: '50px', fontSize: '20px',fontWeight: 'bold' }}  // 버튼 크기 및 텍스트 크기 설정
+        style={{ width: '50px', height: '50px', fontSize: '20px', fontWeight: 'bold' }}  // 버튼 크기 및 텍스트 크기 설정
       >
         &lt; {/* '<' 기호 */}
       </button>
@@ -56,8 +70,8 @@ const LocationInformationComponent = () => {
       {/* 이미지 배경 */}
       <div className="relative">
         <img 
-          src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2F20140701_175%2Fdarkrever3_1404215295678CvFGV_JPEG%2FKakaoTalk_20140701_203820248.jpg&type=a340"  // 여기에 실제 이미지 URL 추가
-          alt="장소 사진 . 임의로 주소 연결."
+          src={layerImage || "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2F20140701_175%2Fdarkrever3_1404215295678CvFGV_JPEG%2FKakaoTalk_20140701_203820248.jpg&type=a340"}  // Layer 이미지가 있으면 출력, 없으면 기본 이미지
+          alt={placeName}
           className="w-full h-60 object-cover"
         />
         <div className="absolute bottom-0 left-0 bg-black bg-opacity-30 text-white p-1 w-full">

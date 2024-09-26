@@ -28,7 +28,7 @@ const DramaContents = () => {
     axios.get('http://localhost:8080/thumbnails/all')
     .then(response => {
       setThumbnails(response.data);
-      console.log("썸네일 데이터: ", response.data);
+      // console.log("썸네일 데이터: ", response.data);
     })
     .catch(error => {
       console.error("썸네일 데이터 가져오는 중 에러 발생!", error);
@@ -75,19 +75,19 @@ const DramaContents = () => {
               <div
                 key={index}
                 onClick={() => handleDramaClick(title)} // 클릭 시 페이지 이동
-                className="relative flex items-end h-40 p-5 font-bold text-black transition-transform duration-300 transform bg-gray-400 rounded-lg cursor-pointer hover:scale-105 active:scale-95 active:bg-gray-100"
+                className="relative flex items-end h-48 p-5 font-bold text-black transition-transform duration-300 transform bg-gray-400 rounded-lg cursor-pointer hover:scale-105 active:scale-95 active:bg-gray-100"
               >
                 {/* 썸네일 이미지가 있으면 출력 */}
                 {findThumbnail(title) && (
                   <img
                   src={`http://localhost:8080/thumbnails/images/${findThumbnail(title)}`} // 확장자를 포함한 이미지 URL
                   alt={`${title} thumbnail`}
-                  className="absolute inset-0 object-cover w-full h-full rounded-lg"
-                />
+                  className="absolute inset-0 object-cover object-top w-full h-full rounded-lg" 
+                  />
                 )}
                 <div className="relative z-10">
-                  <div className="text-left">{title}</div>
-                  <div className="mt-1 text-sm font-normal">드라마</div>
+                  <div className="text-left text-white shadow-lg">{title}</div>
+                  {/* <div className="mt-1 text-sm font-normal">드라마</div> */}
                 </div>
               </div>
             ))}

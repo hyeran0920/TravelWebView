@@ -7,7 +7,7 @@ const Header = () => {
     <div>
     <div className="flex justify-between items-center p-4 bg-white">
       <div className="text-1xl font-bold">
-        여행작旅行作
+        FIK!
       </div>
       <div className="flex items-center">
         <br/>

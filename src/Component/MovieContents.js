@@ -26,7 +26,7 @@ const MovieContents = () => {
     axios.get('http://localhost:8080/thumbnails/all')
       .then(response => {
         setThumbnails(response.data);
-        console.log("썸네일 데이터: ", response.data);
+        // console.log("썸네일 데이터: ", response.data);
       })
       .catch(error => {
         console.error("썸네일 데이터 가져오는 중 에러 발생!", error);
@@ -67,27 +67,27 @@ const MovieContents = () => {
   return (
     <div>
       <div className="p-5">
-        <h2 className="mb-5 text-2xl font-bold">영화 목록</h2>
+        <h2 className="mb-5 text-2xl font-bold">추천 영화</h2>
         <div className="grid grid-cols-1 gap-6 mb-20 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {movieList.map((title, index) => (
-            <div
-              key={index}
-              onClick={() => handleMovieClick(title)} // 클릭 시 페이지 이동
-              className="relative flex items-end h-40 p-5 font-bold text-black transition-transform duration-300 transform bg-gray-400 rounded-lg cursor-pointer hover:scale-105 active:scale-95 active:bg-gray-100"
-            >
-              {/* 썸네일 이미지가 있으면 출력 */}
-              {findThumbnail(title) && (
-                <img
-                src={`http://localhost:8080/thumbnails/images/${findThumbnail(title)}`} // 확장자를 포함한 이미지 URL
-                alt={`${title} thumbnail`}
-                className="absolute inset-0 object-cover w-full h-full rounded-lg"
-              />
-              )}
-              <div className="relative z-10">
-                <div className="text-left">{title}</div>
-                <div className="mt-1 text-sm font-normal">영화</div>
-              </div>
-            </div>
+  {movieList.map((title, index) => (
+    <div
+      key={index}
+      onClick={() => handleMovieClick(title)} // 클릭 시 페이지 이동
+      className="relative flex items-end h-48 p-5 font-bold text-black transition-transform duration-300 transform bg-gray-400 rounded-lg cursor-pointer hover:scale-105 active:scale-95 active:bg-gray-100"
+    >
+      {/* 썸네일 이미지가 있으면 출력 */}
+      {findThumbnail(title) && (
+        <img
+          src={`http://localhost:8080/thumbnails/images/${findThumbnail(title)}`} // 확장자를 포함한 이미지 URL
+          alt={`${title} thumbnail`}
+          className="absolute inset-0 object-cover object-top w-full h-full rounded-lg" // object-top 추가해서 사진 윗쪽이 좀 더 잘보이게
+        />
+      )}
+      <div className="relative z-10 top-2">
+        <div className="text-left text-white shadow-lg">{title}</div>
+        {/* <div className="mt-1 text-sm font-normal text-white shadow-sm">영화</div> */}
+      </div>
+    </div>
           ))}
         </div>
       </div>

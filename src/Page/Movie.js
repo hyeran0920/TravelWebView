@@ -6,7 +6,7 @@ import MovieContents from '../Component/MovieContents';
 const Movie = () => {
   return (
     <div>
-      <FamousContents/>
+      {/* <FamousContents/> */}
       <MovieContents/>
     </div>
   );
