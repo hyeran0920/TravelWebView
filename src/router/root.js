@@ -1,6 +1,8 @@
 import { createBrowserRouter } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import Layout from "../Layout/Layout"; // 올바른 경로로 임포트
+import AddressContentsList from "../Page/AddressContentsList";
+import AddrInformation from "../Page/AddrInformation";
 
 const Home = lazy(() => import("../Page/Home"));
 const Main = lazy(() => import("../Page/Main"));
@@ -74,6 +76,26 @@ const root = createBrowserRouter([
     element: (
       <Suspense fallback={<div>Loading...</div>}>
           <LocationInformation/>
+      </Suspense>
+    )
+  },
+  {
+    path: "/locations/:locationName",
+    element: (
+      <Suspense fallback={<div>Loading...</div>}>
+        <Layout>
+          <AddressContentsList/>
+        </Layout>
+      </Suspense>
+    )
+  },
+  {
+    path: "/InformationByAddr/:contentTitle/:placeName",
+    element: (
+      <Suspense fallback={<div>Loading...</div>}>
+        <Layout>
+          <AddrInformation />
+        </Layout>
       </Suspense>
     )
   },

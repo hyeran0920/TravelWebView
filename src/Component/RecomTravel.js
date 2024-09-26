@@ -1,23 +1,52 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const recommendations = [
-  { name: '속초 영금정', description: '강원 속초시 영금정로 43', color: '#FF6347' },
-  { name: '설악산 국립공원', description: '강원 속초시 설악산로 1091', color: '#4682B4' },
-  { name: '경포대', description: '강원 강릉시 창해로 365', color: '#32CD32' },
-  { name: '주문진', description: '강원 강릉시 주문진읍 해안로 173', color: '#FFD700' },
-  { name: '정동진', description: '강원 강릉시 정동진리', color: '#FFA07A' },
+import Seoul from '../img/seoul.jpg';
+import Gyeonggido from '../img/Gyeonggido.jpg';
+import Songdo from '../img/songdo.jpg';
+import Gangwon from '../img/gangwon.jpg';
+import Chungcheong from '../img/Chungcheong.jpg';
+import Chungbuk from '../img/chungbuk.jpg';
+import Gyeongsangdo from '../img/Gyeongsangdo.jpg';
+import Gyeongbuk from '../img/Gyeongbuk.jpg';
+import Jeonbuk from '../img/Jeonbuk.jpg';
+import Jeonnam from '../img/Jeonnam.jpg';
+import Busan from '../img/busan.jpg'
+import Deagu from '../img/Deagu.jpg'
+
+const locations = [
+  { name: '서울', picture: Seoul },
+  { name: '경기도', picture: Gyeonggido },
+  { name: '인천', picture: Songdo },
+  { name: '강원도', picture: Gangwon },
+  { name: '충청남도', picture: Chungcheong },
+  { name: '충청북도', picture: Chungbuk },
+  { name: '경상남도', picture: Gyeongsangdo },
+  { name: '경상북도', picture: Gyeongbuk },
+  { name: '부산', picture: Busan },
+  { name: '대구', picture: Deagu },
+  { name: '전라남도', picture: Jeonnam },
+  { name: '전라북도', picture: Jeonbuk },
 ];
 
 const RecomTravel = () => {
+
+  const navigate = useNavigate();
+  
+  const handleLocationClick = (locationName) => {
+    // navigate로 지역명을 URL 파라미터로 전달
+    navigate(`/locations/${locationName}`);
+  }
+
   return (
     <div style={{ padding: '20px' }}>
-      <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '20px' }}>추천 여행지</h2>
+      <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '20px' }}>지역별 여행지</h2>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-        {recommendations.map((place, index) => (
+        {locations.map((place, index) => (
           <div
             key={index}
+            onClick={() => handleLocationClick(place.name)}
             style={{
-              backgroundColor: place.color,
               borderRadius: '10px',
               overflow: 'hidden',
               height: '150px',
@@ -30,9 +59,14 @@ const RecomTravel = () => {
               fontWeight: 'bold',
             }}
           >
-            <div>
-              <div style={{textAlign:'left'}}>{place.name}</div>
-              <div style={{ fontSize: '14px', fontWeight: 'normal', marginTop: '5px' }}>{place.description}</div>
+            <img
+              src={place.picture}
+              alt={place.name}
+              loading="lazy"
+              className="absolute inset-0 object-cover object-top w-full h-full rounded-lg"
+            />
+            <div className="relative z-10 top-2">
+              <div className="text-left text-white shadow-lg">{place.name}</div>
             </div>
           </div>
         ))}
