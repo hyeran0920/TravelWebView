@@ -56,12 +56,12 @@ const LocationInformationComponent = () => {
 
   // 촬영지 상세 데이터 렌더링
   return (
-<div className="w-full h-screen bg-gray-300 shadow-lg rounded-lg overflow-hidden relative">
+<div className="relative w-full h-screen overflow-hidden bg-gray-300 rounded-lg shadow-lg">
       
       {/* 뒤로 가기 버튼 */}
       <button
         onClick={() => navigate(-1)}  // 뒤로 가기 기능
-        className="absolute top-4 left-4 bg-gray-100 text-black-500 rounded-full p-2 shadow hover:bg-gray-300 z-50"  // z-index 추가
+        className="absolute z-50 p-2 bg-gray-100 rounded-full shadow top-4 left-4 text-black-500 hover:bg-gray-300"  // z-index 추가
         style={{ width: '50px', height: '50px', fontSize: '20px', fontWeight: 'bold' }}  // 버튼 크기 및 텍스트 크기 설정
       >
         &lt; {/* '<' 기호 */}
@@ -72,9 +72,9 @@ const LocationInformationComponent = () => {
         <img 
           src={layerImage || "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2F20140701_175%2Fdarkrever3_1404215295678CvFGV_JPEG%2FKakaoTalk_20140701_203820248.jpg&type=a340"}  // Layer 이미지가 있으면 출력, 없으면 기본 이미지
           alt={placeName}
-          className="w-full h-60 object-cover"
+          className="object-cover w-full h-60"
         />
-        <div className="absolute bottom-0 left-0 bg-black bg-opacity-30 text-white p-1 w-full">
+        <div className="absolute bottom-0 left-0 w-full p-1 text-white bg-black bg-opacity-30">
           <h2 className="text-2xl font-bold">{placeName}</h2>
           <p className="text-sm">{contentTitle}</p>
         </div>
@@ -96,9 +96,11 @@ const LocationInformationComponent = () => {
 
       {/* 버튼 섹션 */}
       <div className="p-6">
-        <button className="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 transition duration-300">
-          명장면 따라 찍기
-        </button>
+        {layerImage && (
+          <button className="w-full py-3 text-white transition duration-300 bg-blue-500 rounded-lg hover:bg-blue-600">
+            명장면 따라 찍기
+          </button>
+        )}
       </div>
     </div>
   );

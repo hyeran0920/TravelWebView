@@ -38,7 +38,6 @@ const ContentLocations = ({ contentTitle }) => {
     axios.get('http://localhost:8080/thumbnails/all')
       .then(response => {
         setThumbnails(response.data);
-        console.log("썸네일 객체", response.data);
       })
       .catch(error => {
         console.error("썸네일 데이터 가져오는 중 에러 발생!", error);
@@ -72,7 +71,6 @@ const ContentLocations = ({ contentTitle }) => {
 
   // 썸네일에서 해당 영화 제목에 맞는 썸네일을 찾음
   const findThumbnailImage = (title_nm) => {
-    console.log("Thumbnails Array: ", thumbnails); // 썸네일 배열 출력
   
     const matchedThumbnail = thumbnails.find(thumbnail => thumbnail.title_nm === title_nm);
     

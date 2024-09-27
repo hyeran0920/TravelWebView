@@ -16,7 +16,6 @@ const AddrList = () => {
     axios.get(`http://localhost:8080/content/searchByAddress?address=${locationName}`)
     .then(response => {
       setAddrList(response.data);
-      console.log("주소 리스트 데이터: ", response.data); // addrList 데이터 확인
       setLoading(false);
     })
     .catch(error => {
@@ -29,7 +28,6 @@ const AddrList = () => {
     axios.get('http://localhost:8080/thumbnails/all')
     .then(response => {
       setThumbnails(response.data);
-      console.log("썸네일 데이터: ", response.data); // 썸네일 데이터 확인
     })
     .catch(error => {
       console.error("썸네일 데이터 가져오는 중 에러 발생!", error);
@@ -49,9 +47,7 @@ const AddrList = () => {
   }
 
   const findThumbnail = (title_NM) => {
-    console.log("찾고 있는 제목: ", title_NM); // title_NM이 제대로 전달되는지 확인
     const matchedThumbnail = thumbnails.find(thumbnail => thumbnail.title_nm === title_NM); // title_nm과 title_NM 비교
-    console.log("찾은 썸네일: ", matchedThumbnail);
     if (matchedThumbnail) {
       const imageName = matchedThumbnail.image_Name;
       return imageName.includes('.') ? imageName : `${imageName}.jpg`;  // 확장자가 없으면 .jpg 추가
@@ -60,8 +56,6 @@ const AddrList = () => {
   };  
 
   const handleAddrClick = (contentTitle, placeName) => {
-    console.log("contentTitle: ", contentTitle);
-    console.log("placeName: ", placeName); // placeName이 제대로 전달되는지 확인
     navigate(`/InformationByAddr/${contentTitle}/${placeName}`);
   };
   

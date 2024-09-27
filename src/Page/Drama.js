@@ -7,8 +7,6 @@ import DramaContents from '../Component/DramaContents';
 const Drama = () => {
   return (
     <div>
-      <FamousContents/>
-      {/* <RecomContents/> */}
       <DramaContents/>
     </div>
   );

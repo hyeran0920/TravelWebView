@@ -10,7 +10,6 @@ const Main = () => {
     <div>
         <FamousTravel/>
         <RecomTravel/>
-        {/* <FilmLocationListTest/> */}
     </div>
   );
 }
