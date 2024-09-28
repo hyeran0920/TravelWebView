@@ -34,7 +34,7 @@ const locations = [
 const RecomTravel = () => {
 
   const navigate = useNavigate();
-  
+
   const handleLocationClick = (locationName) => {
     // navigate로 지역명을 URL 파라미터로 전달
     navigate(`/locations/${locationName}`);
@@ -51,7 +51,7 @@ const RecomTravel = () => {
             style={{
               borderRadius: '10px',
               overflow: 'hidden',
-              height: '150px',
+              height: '180px',
               position: 'relative',
               display: 'flex',
               alignItems: 'flex-end',
@@ -68,11 +68,20 @@ const RecomTravel = () => {
               className="absolute inset-0 object-cover object-top w-full h-full rounded-lg"
             />
             <div className="relative z-10 top-2">
-              <div className="text-left text-white shadow-lg">{place.name}</div>
+              <div
+                style={{
+                  textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)',
+                  color: 'white',
+                  fontSize: '18px',
+                  fontWeight: 'bold'
+                }}
+              >
+                {place.name}
+              </div>
             </div>
           </div>
         ))}
-        <br/>
+        <br />
       </div>
     </div>
   );
