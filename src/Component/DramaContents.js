@@ -69,7 +69,7 @@ const DramaContents = () => {
     return (
       <div>
         <div className="p-5">
-          <h2 className="mb-5 text-2xl font-bold">영화 목록</h2>
+          <h2 className="mb-5 text-2xl font-bold">추천 드라마</h2>
           <div className="grid grid-cols-1 gap-6 mb-20 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {dramaList.map((title, index) => (
               <div

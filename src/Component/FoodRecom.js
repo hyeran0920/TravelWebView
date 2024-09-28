@@ -17,7 +17,7 @@ const FoodRecom = () => {
 
   return (
     <div style={{ padding: '20px' }}>
-      <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '20px' }}>추천 여행지</h2>
+      <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '20px' }}>추천 맛집</h2>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
         {places.length > 0 ? (
           places.map((place, index) => (
