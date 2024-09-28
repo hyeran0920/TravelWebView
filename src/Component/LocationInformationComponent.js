@@ -4,6 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';  // useNavigate 추�
 
 const LocationInformationComponent = () => {
   const { contentTitle, placeName } = useParams();  // URL 파라미터에서 contentTitle과 placeName 가져오기
+  
   const [locationData, setLocationData] = useState(null);  // 촬영지 데이터 상태 (단일 객체로 변경)
   const [loading, setLoading] = useState(true);    // 로딩 상태 관리
   const [error, setError] = useState(null);        // 에러 상태 추가
@@ -97,7 +98,10 @@ const LocationInformationComponent = () => {
       {/* 버튼 섹션 */}
       <div className="p-6">
         {layerImage && (
-          <button className="w-full py-3 text-white transition duration-300 bg-blue-500 rounded-lg hover:bg-blue-600">
+          <button 
+            onClick={() => navigate('/camera', { state: { layerImage } })}  // 카메라 화면으로 이동할 때 layerImage 넘김
+            className="w-full py-3 text-white transition duration-300 bg-blue-500 rounded-lg hover:bg-blue-600"
+          >
             명장면 따라 찍기
           </button>
         )}

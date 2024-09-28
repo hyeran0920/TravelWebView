@@ -11,6 +11,8 @@ const Movie = lazy(() => import("../Page/Movie"));
 const Drama = lazy(() => import("../Page/Drama"));
 const ContentLocationList = lazy(() => import("../Page/ContentLocationList"));
 const LocationInformation = lazy(() => import("../Page/LocationInformation"));
+const Camera = lazy(() => import("../Page/Camera"));
+const SearchList = lazy(() => import("../Page/SearchList.js"));
 
 const root = createBrowserRouter([
   {
@@ -95,6 +97,24 @@ const root = createBrowserRouter([
       <Suspense fallback={<div>Loading...</div>}>
         <Layout>
           <AddrInformation />
+        </Layout>
+      </Suspense>
+    )
+  },
+  {
+    path: "/camera",  // 카메라 경로 추가
+    element: (
+      <Suspense fallback={<div>Loading...</div>}>
+        <Camera />
+      </Suspense>
+    )
+  },
+  {
+    path: "/content/searchList",  // 검색 경로
+    element: (
+      <Suspense fallback={<div>Loading...</div>}>
+        <Layout>
+          <SearchList />
         </Layout>
       </Suspense>
     )

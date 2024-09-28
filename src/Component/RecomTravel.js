@@ -13,6 +13,7 @@ import Jeonbuk from '../img/Jeonbuk.jpg';
 import Jeonnam from '../img/Jeonnam.jpg';
 import Busan from '../img/busan.jpg'
 import Deagu from '../img/Deagu.jpg'
+import Jeju from '../img/Jejuisland.jpg'
 
 const locations = [
   { name: '서울', picture: Seoul },
@@ -27,6 +28,7 @@ const locations = [
   { name: '대구', picture: Deagu },
   { name: '전라남도', picture: Jeonnam },
   { name: '전라북도', picture: Jeonbuk },
+  { name: '제주특별자치도', picture: Jeju },
 ];
 
 const RecomTravel = () => {
