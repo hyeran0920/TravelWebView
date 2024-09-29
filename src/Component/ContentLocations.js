@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import NearbyContentPlace from './NearbyContentPlace'; // NearbyPlace 컴포넌트 임포트
 
 const ContentLocations = ({ contentTitle }) => {
   const [locations, setLocations] = useState([]);  // 촬영지 목록 상태
@@ -12,6 +11,7 @@ const ContentLocations = ({ contentTitle }) => {
   const [layers, setLayers] = useState([]);        // Layer 데이터를 저장할 상태
   const [loading, setLoading] = useState(true);    // 로딩 상태 관리
   const [error, setError] = useState(null);        // 에러 상태 추가
+  const [images, setImages] = useState({});        // 장소 이미지를 저장할 상태
   const navigate = useNavigate();  // useNavigate 사용
 
   useEffect(() => {
@@ -22,6 +22,7 @@ const ContentLocations = ({ contentTitle }) => {
       .then(response => {
         setLocations(response.data);  // 응답 데이터를 상태로 설정 (촬영지 리스트)
         setLoading(false);           // 로딩 완료
+        fetchImagesForLocations(response.data); // 촬영지에 대한 이미지 가져오기
       })
       .catch(error => {
         console.error("촬영지 데이터를 가져오는 중 에러 발생!", error);
@@ -49,6 +50,37 @@ const ContentLocations = ({ contentTitle }) => {
 
   }, [contentTitle]);
 
+  // 장소 이름을 이용해 이미지를 가져오는 함수
+  const fetchImage = async (placeName) => {
+    try {
+      const response = await axios.get('http://localhost:8080/api/search/place-photo', {
+        params: { query: placeName },  // 장소 이름을 query 파라미터로 전달
+      });
+
+      const place = response.data.candidates[0];
+      if (place && place.photos && place.photos.length > 0) {
+        return `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${place.photos[0].photo_reference}&key=AIzaSyCSlrTpLiBQ3US7E_XtN6QweAOURzeg8Cc`;
+      }
+    } catch (error) {
+      console.error(`Error fetching image for ${placeName}:`, error);
+    }
+    return '/src/img/FoodImg.jpg';  // 에러 발생 시 기본 이미지 반환
+  };
+
+  // 모든 장소에 대해 이미지를 가져오는 함수
+  const fetchImagesForLocations = async (locations) => {
+    const newImages = {};
+
+    for (const location of locations) {
+      const imageUrl = await fetchImage(location.place_Name);  // 장소명으로 이미지 가져오기
+      if (imageUrl) {
+        newImages[location.place_Name] = imageUrl;
+      }
+    }
+
+    setImages(newImages);  // 이미지 상태 업데이트
+  };
+
   // 로딩 중일 때 표시
   if (loading) {
     return <p>Loading filming locations...</p>;
@@ -66,15 +98,11 @@ const ContentLocations = ({ contentTitle }) => {
 
   // 썸네일에서 해당 영화 제목에 맞는 썸네일을 찾음
   const findThumbnailImage = (title_nm) => {
-  
     const matchedThumbnail = thumbnails.find(thumbnail => thumbnail.title_nm === title_nm);
-    
     if (matchedThumbnail) {
-      // 이미지 확장자가 없으면 기본적으로 jpg를 추가
       const imageName = matchedThumbnail.image_Name;
       return imageName.includes('.') ? imageName : `${imageName}.jpg`;  // 확장자가 없으면 .jpg 추가
     }
-    
     return null;
   };
 
@@ -86,23 +114,11 @@ const ContentLocations = ({ contentTitle }) => {
     navigate(`/InformationByPlace/${contentTitle}/${placeName}`); // 제목과 장소로 URL 이동
   };
 
-  // 정렬된 장소를 NearbyPlace에서 받아 처리
-  const handleSortedPlaces = (sortedPlaces) => {
-    setSortedLocations(sortedPlaces); // 정렬된 리스트로 업데이트
-  };
-
-  // 위치 허용 여부를 NearbyPlace에서 받아 처리
-  const handleLocationAllowed = (isAllowed, distances = []) => {
-    setIsLocationAllowed(isAllowed);
-    setDistances(distances); // 거리 정보를 업데이트
-  };
-
   // 최종 렌더링할 장소 리스트
   const renderLocations = sortedLocations.length > 0 ? sortedLocations : locations;
 
   return (
     <div className="p-5 mb-10">
-
       {/* 썸네일 이미지 표시 */}
       {thumbnailUrl && (
         <img
@@ -114,9 +130,6 @@ const ContentLocations = ({ contentTitle }) => {
       
       <h2 className="mb-5 text-2xl font-bold"> # {contentTitle}</h2>
 
-      {/* NearbyPlace 컴포넌트로 글자순, 거리순 정렬 처리 */}
-      <NearbyContentPlace places={locations} onSorted={handleSortedPlaces} onLocationAllowed={handleLocationAllowed} />
-
       <div className="grid grid-cols-1 gap-6 mt-5">
         {renderLocations.map((location, index) => (
           <div
@@ -124,16 +137,18 @@ const ContentLocations = ({ contentTitle }) => {
             onClick={() => handlePlaceClick(contentTitle, location.place_Name)} // contentTitle과 place_Name 전달
             className="relative flex flex-col justify-between h-40 p-5 overflow-hidden rounded-lg shadow-md"
             style={{
-              backgroundColor: '#007BFF', // 파란색 배경
+              backgroundImage: `url(${images[location.place_Name] || '/src/img/FoodImg.jpg'})`, // 이미지가 없을 경우 기본 이미지
+              backgroundSize: 'cover', // 이미지가 박스 전체를 커버
+              backgroundPosition: 'center', // 이미지 중앙 정렬
             }}
           >
-           
             <div className="absolute bottom-0 left-0 w-full p-5 text-lg font-bold text-left text-white bg-black bg-opacity-50">
-               <div className="absolute text-sm text-white top-2 right-4">{isLocationAllowed && location.distance ? `${location.distance} km` : ''}</div>
-               {location.place_Name} 
-              
+              <div className="absolute text-sm text-white top-2 right-4">
+                {isLocationAllowed && location.distance ? `${location.distance} km` : ''}
+              </div>
+              {location.place_Name}
               <p className="mt-1 text-sm text-gray-200">
-                {location.addr}   
+                {location.addr}
               </p>
             </div>
           </div>
