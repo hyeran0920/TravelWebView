@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom'; // useParams 추가
-import ContentLocations from '../Component/ContentLocations'; // ContentLocations 컴포넌트 임포트
 import LocationInformationComponent from '../Component/LocationInformationComponent';
+import CommentComponent from '../Component/CommentComponent';
 
 const LocationInformation = () => {
   const { contentTitle, placeName } = useParams();  
@@ -10,6 +10,7 @@ const LocationInformation = () => {
     <div>
       {/* contentTitle을 ContentLocations 컴포넌트에 전달 */}
       <LocationInformationComponent contentTitle={contentTitle} placeName={placeName} />
+      <CommentComponent contentTitle={contentTitle} placeName={placeName} />
     </div>
   );
 };
