@@ -1,12 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import homeImage from '../img/Home.jpg';
-import logo from '../img/LOGO.png';
-import logo1 from '../img/LOGO1.png';
-import logo2 from '../img/LOGO2.png';
-import logo3 from '../img/LOGO3.png';
-import logo4 from '../img/LOGO4.png';
-import logo7 from '../img/logo7.png';
+import logo from '../img/mainLogo.png';
+
 
 const Home = () => {
   const navigate = useNavigate();
@@ -25,7 +21,7 @@ const Home = () => {
         <div className="relative z-10 flex flex-col items-center justify-center h-full space-y-4">
             <img
                 className="w-full h-full"
-                src={logo7}
+                src={logo}
                 alt='Film in Korea Logo'
             />
         </div>
