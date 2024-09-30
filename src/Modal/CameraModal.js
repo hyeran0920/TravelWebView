@@ -1,3 +1,5 @@
+import React from "react";
+
 const CameraModal = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 

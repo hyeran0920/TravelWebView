@@ -1,20 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import NearbyFoodPlace from './NearbyFoodPlace'; 
+import defaultImage from '../img/FoodImg.jpg'; // 기본 이미지 import
 
 const FoodRecom = () => {
   const [places, setPlaces] = useState([]); 
   const [sortedPlaces, setSortedPlaces] = useState([]); // 정렬된 음식점 데이터 상태
   const [isLocationAllowed, setIsLocationAllowed] = useState(false); // 위치 허용 여부 상태
   const [images, setImages] = useState({}); // 이미지를 저장할 상태
+  const [ratings, setRatings] = useState({}); // 별점 데이터를 저장할 상태
 
+  // 백엔드에서 음식 데이터를 가져오는 함수
   useEffect(() => {
-    // 백엔드에서 음식 데이터를 가져옴
     axios.get('http://localhost:8080/food/all')
       .then((response) => {
         setPlaces(response.data);
         setSortedPlaces(response.data); // 기본 데이터를 설정 (정렬 전)
         fetchImagesForPlaces(response.data); // 음식점 이미지 가져오기
+        fetchRatingsForPlaces(response.data); // 별점 데이터 가져오기
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
@@ -40,10 +43,24 @@ const FoodRecom = () => {
 
       const place = response.data.candidates[0];
       if (place && place.photos && place.photos.length > 0) {
-        return `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${place.photos[0].photo_reference}&key=AIzaSyCSlrTpLiBQ3US7E_XtN6QweAOURzeg8Cc`;
+        return `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${place.photos[0].photo_reference}&key=YOUR_API_KEY`;
       }
     } catch (error) {
       console.error(`Error fetching image for ${placeName}:`, error);
+    }
+    return null;
+  };
+
+  // 장소 이름을 이용해 별점 정보를 가져오는 함수
+  const fetchRating = async (placeId) => {
+    try {
+      const response = await axios.get(`https://maps.googleapis.com/maps/api/place/details/json?placeid=${placeId}&key=YOUR_API_KEY`);
+      const placeDetails = response.data.result;
+      if (placeDetails && placeDetails.rating) {
+        return placeDetails.rating;
+      }
+    } catch (error) {
+      console.error(`Error fetching rating for place ID ${placeId}:`, error);
     }
     return null;
   };
@@ -60,6 +77,21 @@ const FoodRecom = () => {
     }
 
     setImages(newImages);  // 이미지 상태 업데이트
+  };
+
+  // 모든 장소에 대해 별점 데이터를 가져오는 함수
+  const fetchRatingsForPlaces = async (places) => {
+    const newRatings = {};
+
+    for (const place of places) {
+      const placeId = place.googlePlaceId;  // 각 장소의 고유 Place ID가 있다고 가정
+      const rating = await fetchRating(placeId);
+      if (rating) {
+        newRatings[place.rstrNm] = rating;
+      }
+    }
+
+    setRatings(newRatings);  // 별점 상태 업데이트
   };
 
   // 최종 렌더링할 장소 리스트 (정렬된 리스트를 우선 사용)
@@ -81,32 +113,23 @@ const FoodRecom = () => {
           renderPlaces.map((place, index) => (
             <div
               key={index}
+              className="relative flex flex-col justify-between h-48 p-5 overflow-hidden rounded-lg shadow-md"
               style={{
-                backgroundColor: '#999', 
-                borderRadius: '10px',
-                overflow: 'hidden',
-                height: '150px',
-                position: 'relative',
-                display: 'flex',
-                alignItems: 'flex-end',
-                padding: '20px',
-                color: 'white',
-                fontSize: '18px',
-                fontWeight: 'bold',
-                backgroundImage: images[place.rstrNm] ? `url(${images[place.rstrNm]})` : null,  // 배경에 이미지 추가
+                backgroundImage: images[place.rstrNm] ? `url(${images[place.rstrNm]})` : `url(${defaultImage})`,  // 이미지가 없으면 기본 이미지
+                backgroundColor: '#007BFF', // 파란색 배경 (이미지가 없을 때)
                 backgroundSize: 'cover', // 이미지 크기 설정
                 backgroundPosition: 'center', // 이미지 위치 설정
               }}
             >
-              <div style={{ position: 'absolute', top: '10px', right: '20px', fontSize: '14px' }}>
-                {isLocationAllowed && place.distance ? `${place.distance} km` : ''}
-              </div>
-              <div style={{ textAlign: 'left' }}>
-                {/* 식당명 옆에 거리를 표시 */}
+              <div className="absolute bottom-0 left-0 w-full p-2 text-lg font-bold text-left text-white">
+                <div className="absolute text-sm text-white top-2 right-4">
+                  {isLocationAllowed && place.distance ? `${place.distance} km` : ''}
+                </div>
                 {place.rstrNm} 
-              </div> {/* 식당명 출력 */}
-              <div style={{ fontSize: '14px', fontWeight: 'normal', marginTop: '5px' }}>
-                {place.rstrRoadAddr} {/* 도로명 주소 출력 */}
+                <span className="ml-2 text-sm text-yellow-400">{ratings[place.rstrNm] ? `★ ${ratings[place.rstrNm]}` : '별점 없음'}</span> {/* 별점 추가 */}
+                <p className="mt-1 text-sm text-gray-200">
+                  {place.rstrRoadAddr}
+                </p>
               </div>
             </div>
           ))

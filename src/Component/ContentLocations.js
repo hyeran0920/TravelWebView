@@ -132,45 +132,55 @@ const ContentLocations = ({ contentTitle }) => {
   const renderLocations = sortedLocations.length > 0 ? sortedLocations : locations;
 
   return (
-    <div className="p-5 mb-10">
+    <div>
+<div className="relative w-full h-full"> {/* 상대적 위치 설정 */}
+  <img
+    src={`http://localhost:8080/thumbnails/images/${thumbnailUrl}`}  // 확장자를 포함한 이미지 URL
+    alt={`${contentTitle} 썸네일`}  // 'contentTitle'을 사용
+    className="object-cover w-full h-full mb-2" // 이미지 스타일
+  />
 
-      {/* 썸네일 이미지 표시 */}
-      {thumbnailUrl && (
-        <img
-          src={`http://localhost:8080/thumbnails/images/${thumbnailUrl}`} // 확장자를 포함한 이미지 URL
-          alt={`${contentTitle} 썸네일`}  // 'title' 대신 'contentTitle'을 사용
-          className="object-cover w-full h-64 mb-5" // 원하는 크기로 스타일링
-        />
-      )}
+<h2 className="absolute bottom-0 left-0 text-white text-2xl font-bold p-4 w-full shadow-2xl">
+  # {contentTitle}
+</h2>
+
+</div>
+
       
-      <h2 className="mb-5 text-2xl font-bold"> # {contentTitle}</h2>
 
       {/* NearbyPlace 컴포넌트로 글자순, 거리순 정렬 처리 */}
       <NearbyContentPlace places={locations} onSorted={handleSortedPlaces} onLocationAllowed={handleLocationAllowed} />
       <div className="grid grid-cols-1 gap-6 mt-5">
-        {renderLocations.map((location, index) => (
-          <div
-            key={index}
-            onClick={() => handlePlaceClick(contentTitle, location.place_Name)} // contentTitle과 place_Name 전달
-            className="relative flex flex-col justify-between h-40 p-5 overflow-hidden rounded-lg shadow-md"
-            style={{
-              backgroundImage: images[location.place_Name] ? `url(${images[location.place_Name]})` : '#007BFF', // 이미지가 있으면 배경으로 설정
-              backgroundColor: '#007BFF', // 파란색 배경 (이미지가 없을 때)
-              backgroundSize: 'cover', // 이미지 크기 설정
-              backgroundPosition: 'center', // 이미지 위치 설정
-            }}
-          >
-            <div className="absolute bottom-0 left-0 w-full p-5 text-lg font-bold text-left text-white bg-black bg-opacity-50">
-              <div className="absolute text-sm text-white top-2 right-4">{isLocationAllowed && location.distance ? `${location.distance} km` : ''}</div>
-              {location.place_Name} 
-              
-              <p className="mt-1 text-sm text-gray-200">
-                {location.addr}   
-              </p>
-            </div>
-            
+      {renderLocations.map((location, index) => {
+      // 해당 장소의 이미지를 우선 가져오고, 없으면 썸네일 이미지로 대체
+      const backgroundImageUrl = images[location.place_Name]
+        ? images[location.place_Name]
+        : thumbnailUrl ? `http://localhost:8080/thumbnails/images/${thumbnailUrl}` : '#007BFF'; // 썸네일이 없으면 파란 배경
+
+      return (
+        <div
+          key={index}
+          onClick={() => handlePlaceClick(contentTitle, location.place_Name)} // contentTitle과 place_Name 전달
+          className="relative flex flex-col justify-between h-40 p-5 overflow-hidden rounded-lg shadow-md"
+          style={{
+            backgroundImage: `url(${backgroundImageUrl})`, // 이미지가 있으면 배경으로 설정
+            backgroundColor: '#007BFF', // 파란색 배경 (이미지가 없을 때)
+            backgroundSize: 'cover', // 이미지 크기 설정
+            backgroundPosition: 'center', // 이미지 위치 설정
+          }}
+        >
+          <div className="absolute bottom-0 left-0 w-full p-2 text-lg font-bold text-left text-white">
+            <div className="absolute text-sm text-white top-2 right-4">{isLocationAllowed && location.distance ? `${location.distance} km` : ''}</div>
+            {location.place_Name}
+        
+            <p className="mt-1 text-sm text-gray-200">
+              {location.addr}
+            </p>
           </div>
-        ))}
+        </div>
+      );
+    })}
+    <br/>
       </div>
       <TopButton/>
     </div>
