@@ -22,19 +22,27 @@ const CameraComponent = () => {
   useEffect(() => {
     let localStream;
 
-    navigator.mediaDevices.getUserMedia({ video: { zoom: true } }) // 카메라 줌 기능이 있는지 확인
-      .then(stream => {
-        localStream = stream; // 로컬 스트림 저장
-        const videoTrack = stream.getVideoTracks()[0]; // 비디오 트랙 추출
-        setTrack(videoTrack); // 트랙 저장
+    const startCamera = () => {
+      navigator.mediaDevices.getUserMedia({ video: { zoom: true } })
+        .then(stream => {
+          localStream = stream; // 로컬 스트림 저장
+          const videoTrack = stream.getVideoTracks()[0]; // 비디오 트랙 추출
+          setTrack(videoTrack); // 트랙 저장
 
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream; // 비디오 스트림을 설정
-        }
-      })
-      .catch(error => {
-        console.error("카메라 접근 중 에러 발생!", error); // 카메라 접근 실패 시 오류 출력
-      });
+          if (videoRef.current) {
+            videoRef.current.srcObject = stream; // 비디오 스트림을 설정
+          }
+        })
+        .catch(error => {
+          if (error.name === 'NotReadableError') {
+            console.error("카메라 접근 중 에러 발생! 카메라가 다른 프로그램에서 사용 중입니다.", error);
+          } else {
+            console.error("카메라 접근 중 에러 발생!", error);
+          }
+        });
+    };
+
+    startCamera();
 
     // 컴포넌트가 사라질 때 비디오 트랙(= 영상 데이터 스트림)을 중지
     return () => {
@@ -62,22 +70,28 @@ const CameraComponent = () => {
 
       // 이미지를 Blob 형태로 변환하고 서버에 업로드
       canvas.toBlob((blob) => {
-        const formData = new FormData();
-        formData.append('file', blob, 'captured_image.png'); // 파일 데이터 추가
-
-        axios.post('http://localhost:8080/api/upload', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        })
-        .then(response => {
-          console.log("이미지 업로드 성공", response.data); // 업로드 성공 시 메시지 출력
-          setIsModalOpen(true); // 모달 열기
-        })
-        .catch(error => {
-          console.error("이미지 업로드 실패", error); // 업로드 실패 시 오류 출력
-        });
+        if (blob) {
+          console.log(blob); // Blob이 제대로 생성되었는지 확인
+          const formData = new FormData();
+          formData.append('file', blob, 'captured_image.png');
+      
+          axios.post('http://localhost:8080/api/upload', formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          })
+          .then(response => {
+            console.log("이미지 업로드 성공", response.data);
+            setIsModalOpen(true);
+          })
+          .catch(error => {
+            console.error("이미지 업로드 실패", error);
+          });
+        } else {
+          console.error("Blob 생성 실패");
+        }
       }, 'image/png');
+      
     }
   };
 
