@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import NearbyContentPlace from './NearbyContentPlace'; // NearbyPlace 컴포넌트 임포트
+import TopButton from './TopButton';
 
 const ContentLocations = ({ contentTitle }) => {
   const [locations, setLocations] = useState([]);  // 촬영지 목록 상태
@@ -65,6 +66,7 @@ const ContentLocations = ({ contentTitle }) => {
     } catch (error) {
       console.error(`Error fetching image for ${placeName}:`, error);
     }
+
     return null;
   };
 
@@ -97,6 +99,19 @@ const ContentLocations = ({ contentTitle }) => {
     return <p>No filming locations available for {contentTitle}.</p>;
   }
 
+  // 썸네일에서 해당 영화 제목에 맞는 썸네일을 찾음
+  const findThumbnailImage = (title_nm) => {
+    const matchedThumbnail = thumbnails.find(thumbnail => thumbnail.title_nm === title_nm);
+    if (matchedThumbnail) {
+      const imageName = matchedThumbnail.image_Name;
+      return imageName.includes('.') ? imageName : `${imageName}.jpg`;  // 확장자가 없으면 .jpg 추가
+    }
+    return null;
+  };
+
+  // 썸네일 이미지 URL을 가져옴
+  const thumbnailUrl = findThumbnailImage(contentTitle);
+
   // 장소 박스를 클릭하면 해당 작품의 장소를 선택하고 페이지로 이동
   const handlePlaceClick = (contentTitle, placeName) => {
     navigate(`/InformationByPlace/${contentTitle}/${placeName}`); // 제목과 장소로 URL 이동
@@ -118,11 +133,20 @@ const ContentLocations = ({ contentTitle }) => {
 
   return (
     <div className="p-5 mb-10">
+
+      {/* 썸네일 이미지 표시 */}
+      {thumbnailUrl && (
+        <img
+          src={`http://localhost:8080/thumbnails/images/${thumbnailUrl}`} // 확장자를 포함한 이미지 URL
+          alt={`${contentTitle} 썸네일`}  // 'title' 대신 'contentTitle'을 사용
+          className="object-cover w-full h-64 mb-5" // 원하는 크기로 스타일링
+        />
+      )}
+      
       <h2 className="mb-5 text-2xl font-bold"> # {contentTitle}</h2>
 
       {/* NearbyPlace 컴포넌트로 글자순, 거리순 정렬 처리 */}
       <NearbyContentPlace places={locations} onSorted={handleSortedPlaces} onLocationAllowed={handleLocationAllowed} />
-
       <div className="grid grid-cols-1 gap-6 mt-5">
         {renderLocations.map((location, index) => (
           <div
@@ -137,16 +161,18 @@ const ContentLocations = ({ contentTitle }) => {
             }}
           >
             <div className="absolute bottom-0 left-0 w-full p-5 text-lg font-bold text-left text-white bg-black bg-opacity-50">
-              <div className="absolute top-2 right-4 text-white text-sm">{isLocationAllowed && location.distance ? `${location.distance} km` : ''}</div>
+              <div className="absolute text-sm text-white top-2 right-4">{isLocationAllowed && location.distance ? `${location.distance} km` : ''}</div>
               {location.place_Name} 
               
               <p className="mt-1 text-sm text-gray-200">
                 {location.addr}   
               </p>
             </div>
+            
           </div>
         ))}
       </div>
+      <TopButton/>
     </div>
   );
 };
