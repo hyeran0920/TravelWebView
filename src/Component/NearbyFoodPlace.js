@@ -80,11 +80,11 @@ const NearbyFoodPlace = ({ places, onSorted, onLocationAllowed }) => {
   };
 
   return (
-    <div className="flex space-x-4 mb-3">
-      <button onClick={handleAlphabeticalSort} className="p-3 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 transition duration-300 ease-in-out transform hover:scale-105">
+    <div className="flex mb-3 space-x-4">
+      <button onClick={handleAlphabeticalSort} className="p-3 text-white transition duration-300 ease-in-out transform bg-blue-500 rounded-lg shadow-md hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 hover:scale-105">
         글자순
       </button>
-      <button onClick={requestLocation} className="p-3 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-600 focus:ring-4 focus:ring-green-300 transition duration-300 ease-in-out transform hover:scale-105">
+      <button onClick={requestLocation} className="p-3 text-white transition duration-300 ease-in-out transform bg-green-500 rounded-lg shadow-md hover:bg-green-600 focus:ring-4 focus:ring-green-300 hover:scale-105">
         거리순
       </button>
     </div>

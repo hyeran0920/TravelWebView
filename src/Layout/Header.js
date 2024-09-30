@@ -1,12 +1,13 @@
 import React from 'react';
 import Search from '../Page/Search';
 import Nav from '../Page/Nav';
+import logo from '../img/LOGO1.png';
 
 const Header = () => {
   return (
     <div>
-    <div className="flex justify-between items-center p-4 bg-white">
-      <div className="text-1xl font-bold">
+    <div className="flex items-center justify-between p-4 bg-white">
+      <div className="font-bold text-1xl">
         FIK!
       </div>
       <div className="flex items-center">
