@@ -24,7 +24,7 @@ const Nav = () => {
   const categories = ['지역', '영화', '드라마', '맛집'];
 
   return (
-    <div className="flex items-center justify-center p-2 space-x-4 bg-white shadow-md">
+    <div className="flex items-center justify-center pt-2 space-x-4 bg-white shadow-md">
       {categories.map((category) => (
         <button
           key={category}

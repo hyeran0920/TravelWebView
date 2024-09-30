@@ -131,18 +131,21 @@ const ContentLocations = ({ contentTitle }) => {
   const renderLocations = sortedLocations.length > 0 ? sortedLocations : locations;
 
   return (
-    <div className="p-5 mb-10">
+    <div>
+<div className="relative w-full h-full"> {/* 상대적 위치 설정 */}
+  <img
+    src={`http://localhost:8080/thumbnails/images/${thumbnailUrl}`}  // 확장자를 포함한 이미지 URL
+    alt={`${contentTitle} 썸네일`}  // 'contentTitle'을 사용
+    className="object-cover w-full h-full mb-2" // 이미지 스타일
+  />
 
-      {/* 썸네일 이미지 표시 */}
-      {thumbnailUrl && (
-        <img
-          src={`http://localhost:8080/thumbnails/images/${thumbnailUrl}`} // 확장자를 포함한 이미지 URL
-          alt={`${contentTitle} 썸네일`}  // 'title' 대신 'contentTitle'을 사용
-          className="object-cover w-full h-64 mb-5" // 원하는 크기로 스타일링
-        />
-      )}
+<h2 className="absolute bottom-0 left-0 text-white text-2xl font-bold p-4 w-full shadow-2xl">
+  # {contentTitle}
+</h2>
+
+</div>
+
       
-      <h2 className="mb-5 text-2xl font-bold"> # {contentTitle}</h2>
 
       {/* NearbyPlace 컴포넌트로 글자순, 거리순 정렬 처리 */}
       <NearbyContentPlace places={locations} onSorted={handleSortedPlaces} onLocationAllowed={handleLocationAllowed} />
@@ -165,7 +168,7 @@ const ContentLocations = ({ contentTitle }) => {
             backgroundPosition: 'center', // 이미지 위치 설정
           }}
         >
-          <div className="absolute bottom-0 left-0 w-full p-5 text-lg font-bold text-left text-white bg-black bg-opacity-50">
+          <div className="absolute bottom-0 left-0 w-full p-2 text-lg font-bold text-left text-white">
             <div className="absolute text-sm text-white top-2 right-4">{isLocationAllowed && location.distance ? `${location.distance} km` : ''}</div>
             {location.place_Name}
         
@@ -176,6 +179,7 @@ const ContentLocations = ({ contentTitle }) => {
         </div>
       );
     })}
+    <br/>
       </div>
     </div>
   );
