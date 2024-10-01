@@ -77,7 +77,7 @@ const FamousTravel = () => {
 
   return (
     <div style={{ padding: '20px', textAlign: 'center' }}>
-      <h2 style={{ fontSize: '22px', fontWeight: 'bold', marginBottom: '10px',textAlign:'left' }}>인기 촬영지</h2>
+      <h2 style={{ fontSize: '22px', fontWeight: 'bold', marginBottom: '10px',textAlign:'left' }}>촬영지 미리보기</h2>
       <div style={{ display: 'flex', overflow: 'hidden', width: '100%', maxWidth: '900px', margin: '0 auto', position: 'relative' }}>
         <button 
           onClick={handlePrev}

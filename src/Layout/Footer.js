@@ -13,13 +13,6 @@ const Footer = () => {
       navigate('/main'); // 'home' 버튼을 클릭하면 '/main' 경로로 이동
     };
   }
-  // } else if (navItem === 'search') {
-  //   setIsModalOpen(true); // 'search' 버튼을 클릭하면 모달을 염
-  // }
-
-  // const closeModal = () => {
-  //   setIsModalOpen(false); // 모달 닫기 함수
-  // };
 
   return (
     <div>
@@ -34,21 +27,7 @@ const Footer = () => {
           <i className="text-xl fas fa-home"></i>
           <span className="text-xs">Home</span>
         </button>
-
-          {/* 서치 버튼 */}
-        {/* <button
-          onClick={() => handleNavClick('search')}
-          className={`flex flex-col items-center ${
-            active === 'search' ? 'text-blue-600' : 'text-gray-400'
-          }`}
-        >
-          <i className="text-xl fas fa-search"></i>
-          <span className="text-xs">Search</span>
-        </button> */}
       </div>
-
-      {/* Modal 컴포넌트 사용 */}
-      {/* <SearchModal isOpen={isModalOpen} onClose={closeModal} /> */}
     </div>
   );
 };
