@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 const NearbyFoodPlace = ({ places, onSorted, onLocationAllowed }) => {
   const [sortedPlaces, setSortedPlaces] = useState([]); // 정렬된 음식점 리스트
   const [isLocationAllowed, setIsLocationAllowed] = useState(false); // 위치 허용 여부
+  const [isDistanceSorted, setIsDistanceSorted] = useState(true); // 현재 정렬 상태 (거리순 정렬 여부)
 
   const calculateDistance = (lat1, lon1, lat2, lon2) => {
     const R = 6371; // 지구 반경 (단위: km)
@@ -52,6 +53,7 @@ const NearbyFoodPlace = ({ places, onSorted, onLocationAllowed }) => {
           onSorted(sortedList); // 부모 컴포넌트로 정렬된 데이터 전달
           onLocationAllowed(true, distances); // 부모 컴포넌트로 위치 허용 여부 전달 및 거리 정보 전달
           setIsLocationAllowed(true); // 위치 허용 상태 설정
+          setIsDistanceSorted(true); // 거리순으로 정렬되었음을 상태로 설정
         },
         (error) => {
           alert('위치 권한이 차단되었습니다. 브라우저 설정에서 위치 권한을 허용해주세요.');
@@ -63,6 +65,15 @@ const NearbyFoodPlace = ({ places, onSorted, onLocationAllowed }) => {
       console.error("Geolocation을 지원하지 않는 브라우저입니다.");
     }
   };
+
+// 버튼 클릭 시 정렬 방식 변경
+const toggleSortOrder = () => {
+  if (isDistanceSorted) {
+    handleAlphabeticalSort(); // 글자순으로 정렬
+  } else {
+    requestLocation(); // 거리순으로 정렬
+  }
+};
 
   // 글자순 정렬 처리
   const handleAlphabeticalSort = () => {
@@ -77,17 +88,15 @@ const NearbyFoodPlace = ({ places, onSorted, onLocationAllowed }) => {
       setSortedPlaces(sortedByAlphabet); // 정렬된 리스트 업데이트
       onSorted(sortedByAlphabet); // 부모 컴포넌트로 정렬된 리스트 전달
     }
+    setIsDistanceSorted(false); // 글자순으로 정렬되었음을 상태로 설정
   };
 
   return (
     <div className="flex mb-3 space-x-4">
-      <button onClick={handleAlphabeticalSort} className="p-3 text-white transition duration-300 ease-in-out transform bg-blue-500 rounded-lg shadow-md hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 hover:scale-105">
-        글자순
-      </button>
-      <button onClick={requestLocation} className="p-3 text-white transition duration-300 ease-in-out transform bg-green-500 rounded-lg shadow-md hover:bg-green-600 focus:ring-4 focus:ring-green-300 hover:scale-105">
-        거리순
-      </button>
-    </div>
+    <button onClick={toggleSortOrder} className="p-3 text-white transition duration-300 ease-in-out transform bg-blue-500 rounded-lg shadow-md hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 hover:scale-105">
+      {isDistanceSorted ? '글자순 보기' : '거리순 보기'}
+    </button>
+  </div>
   );
 };
 
