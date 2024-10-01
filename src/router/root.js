@@ -9,6 +9,7 @@ const Main = lazy(() => import("../Page/Main"));
 const Food = lazy(() => import("../Page/Food"));
 const Movie = lazy(() => import("../Page/Movie"));
 const Drama = lazy(() => import("../Page/Drama"));
+const Map = lazy(() => import("../Component/Map"));
 const ContentLocationList = lazy(() => import("../Page/ContentLocationList"));
 const LocationInformation = lazy(() => import("../Page/LocationInformation"));
 const Camera = lazy(() => import("../Page/Camera"));
@@ -117,6 +118,15 @@ const root = createBrowserRouter([
           <SearchList />
         </Layout>
       </Suspense>
+    )
+  },  {
+    path: "/Map",  // 카메라 경로 추가
+    element: (
+      <Suspense fallback={<div>Loading...</div>}>
+        <Layout>
+        <Map />
+        </Layout>
+        </Suspense>
     )
   },
 ]);

@@ -43,7 +43,7 @@ const FoodRecom = () => {
 
       const place = response.data.candidates[0];
       if (place && place.photos && place.photos.length > 0) {
-        return `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${place.photos[0].photo_reference}&key=YOUR_API_KEY`;
+        return `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${place.photos[0].photo_reference}&key=AIzaSyCSlrTpLiBQ3US7E_XtN6QweAOURzeg8Cc`;
       }
     } catch (error) {
       console.error(`Error fetching image for ${placeName}:`, error);
@@ -54,7 +54,7 @@ const FoodRecom = () => {
   // 장소 이름을 이용해 별점 정보를 가져오는 함수
   const fetchRating = async (placeId) => {
     try {
-      const response = await axios.get(`https://maps.googleapis.com/maps/api/place/details/json?placeid=${placeId}&key=YOUR_API_KEY`);
+      const response = await axios.get(`https://maps.googleapis.com/maps/api/place/details/json?placeid=${placeId}&key=AIzaSyCSlrTpLiBQ3US7E_XtN6QweAOURzeg8Cc`);
       const placeDetails = response.data.result;
       if (placeDetails && placeDetails.rating) {
         return placeDetails.rating;
