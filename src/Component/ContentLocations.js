@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import NearbyContentPlace from './NearbyContentPlace'; // NearbyPlace 컴포넌트 임포트
-import TopButton from './TopButton';
 
 const ContentLocations = ({ contentTitle }) => {
   const [locations, setLocations] = useState([]);  // 촬영지 목록 상태
@@ -182,7 +181,6 @@ const ContentLocations = ({ contentTitle }) => {
     })}
     <br/>
       </div>
-      <TopButton/>
     </div>
   );
 };
