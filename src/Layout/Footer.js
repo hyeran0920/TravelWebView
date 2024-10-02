@@ -30,10 +30,10 @@ const Nav = () => {
 
   const categories = [
     { name: 'Home', icon: <AiFillHome /> },
-    { name: '지도', icon: <FaMapMarkedAlt /> },
     { name: '영화', icon: <FaFilm /> },
     { name: '드라마', icon: <MdLiveTv /> },
     { name: '맛집', icon: <GiForkKnifeSpoon /> },
+    { name: '지도', icon: <FaMapMarkedAlt /> },
   ];
 
   return (
