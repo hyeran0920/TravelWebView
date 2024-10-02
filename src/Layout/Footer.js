@@ -1,30 +1,38 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // useNavigate 훅 import
-// import SearchModal from '../Modal/SearchModal';
+import Map from '../Component/Map';
+
 
 const Footer = () => {
   const [active, setActive] = useState('home');
-  // const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate(); // 경로 이동을 위한 useNavigate 훅 사용
 
   const handleNavClick = (navItem) => {
     setActive(navItem);
     if (navItem === 'home') {
       navigate('/main'); // 'home' 버튼을 클릭하면 '/main' 경로로 이동
-    };
-  }
-  // } else if (navItem === 'search') {
-  //   setIsModalOpen(true); // 'search' 버튼을 클릭하면 모달을 염
-  // }
-
-  // const closeModal = () => {
-  //   setIsModalOpen(false); // 모달 닫기 함수
-  // };
+    } else if (navItem === 'Map') {
+      navigate('/Map'); // '지도' 버튼을 클릭하면 '/map' 경로로 이동
+    } else if (navItem === 'back') {
+      navigate(-1); // '뒤로가기' 버튼을 클릭하면 이전 페이지로 이동
+    }
+  };
 
   return (
     <div>
       <div className="fixed bottom-0 left-0 right-0 flex justify-around p-4 bg-white shadow-md">
-        {/* 홈버튼 */}
+        {/* 뒤로가기 버튼 */}
+        <button
+          onClick={() => handleNavClick('back')}
+          className={`flex flex-col items-center ${
+            active === 'back' ? 'text-blue-600' : 'text-gray-400'
+          }`}
+        >
+          <i className="text-xl fas fa-arrow-left"></i>
+          <span className="text-xs">Back</span>
+        </button>
+
+        {/* 홈 버튼 */}
         <button
           onClick={() => handleNavClick('home')}
           className={`flex flex-col items-center ${
@@ -35,59 +43,19 @@ const Footer = () => {
           <span className="text-xs">Home</span>
         </button>
 
-          {/* 서치 버튼 */}
-        {/* <button
-          onClick={() => handleNavClick('search')}
+        {/* 지도 버튼 */}
+        <button
+          onClick={() => handleNavClick('Map')}
           className={`flex flex-col items-center ${
-            active === 'search' ? 'text-blue-600' : 'text-gray-400'
+            active === 'map' ? 'text-blue-600' : 'text-gray-400'
           }`}
         >
-          <i className="text-xl fas fa-search"></i>
-          <span className="text-xs">Search</span>
-        </button> */}
+          <i className="text-xl fas fa-map-marker-alt"></i>
+          <span className="text-xs">Map</span>
+        </button>
       </div>
-
-      {/* Modal 컴포넌트 사용 */}
-      {/* <SearchModal isOpen={isModalOpen} onClose={closeModal} /> */}
     </div>
   );
 };
 
 export default Footer;
-
-
-
-
-// import React, { useState } from 'react';
-
-// const Footer = () => {
-//   const [active, setActive] = useState('home');
-
-//   const handleNavClick = (navItem) => {
-//     setActive(navItem);
-//   };
-
-//   const navItems = [
-//     { name: 'home', icon: 'home', label: 'Home' },
-//     { name: 'search', icon: 'search', label: 'Search' },
-//   ];
-
-//   return (
-//     <div className="fixed bottom-0 left-0 right-0 flex justify-around p-4 bg-white shadow-md">
-//       {navItems.map((item) => (
-//         <button
-//           key={item.name}
-//           onClick={() => handleNavClick(item.name)}
-//           className={`flex flex-col items-center ${
-//             active === item.name ? 'text-blue-600' : 'text-gray-400'
-//           }`}
-//         >
-//           <i className={`fas fa-${item.icon} text-xl`}></i>
-//           <span className="text-xs">{item.label}</span>
-//         </button>
-//       ))}
-//     </div>
-//   );
-// };
-
-// export default Footer;
