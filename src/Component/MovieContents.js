@@ -67,8 +67,9 @@ const handleMovieClick = (contentTitle) => {
 return (
   <div>
     <div className="p-5">
-      <h2 className="mb-5 text-2xl font-bold">추천 영화</h2>
-      <div className="grid grid-cols-1 gap-6 mb-20 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      <br/>
+    <h2 style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '10px',marginTop: '25px', textAlign: 'left' }}>영화 목록</h2>
+    <div className="grid grid-cols-1 gap-6 mb-20 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {movieList.map((title, index) => (
           <div
             key={index}
@@ -84,7 +85,9 @@ return (
               />
             )}
             <div className="relative z-10 top-2">
-              <div className="text-left text-white shadow-lg">{title}</div>
+            <div className="text-left text-white" style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)' }}>
+  {title}
+</div>
               {/* <div className="mt-1 text-sm font-normal text-white shadow-sm">영화</div> */}
             </div>
           </div>

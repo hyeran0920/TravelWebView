@@ -43,7 +43,7 @@ const FoodRecom = () => {
 
       const place = response.data.candidates[0];
       if (place && place.photos && place.photos.length > 0) {
-        return `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${place.photos[0].photo_reference}&key=AIzaSyCSlrTpLiBQ3US7E_XtN6QweAOURzeg8Cc`;
+        return `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${place.photos[0].photo_reference}&key=YOUR_GOOGLE_API_KEY`;
       }
     } catch (error) {
       console.error(`Error fetching image for ${placeName}:`, error);
@@ -51,18 +51,37 @@ const FoodRecom = () => {
     return null;
   };
 
-  // 장소 이름을 이용해 별점 정보를 가져오는 함수
-  const fetchRating = async (placeId) => {
+  // 장소 이름을 이용해 백엔드에서 별점 정보를 가져오는 함수
+  const fetchRating = async (placeName) => {
     try {
-      const response = await axios.get(`https://maps.googleapis.com/maps/api/place/details/json?placeid=${placeId}&key=AIzaSyCSlrTpLiBQ3US7E_XtN6QweAOURzeg8Cc`);
-      const placeDetails = response.data.result;
-      if (placeDetails && placeDetails.rating) {
-        return placeDetails.rating;
+      const response = await axios.get('http://localhost:8080/api/search/place-photo', {
+        params: { query: placeName },  // 장소 이름을 query 파라미터로 전달
+      });
+
+      const place = response.data.candidates[0]; // 첫 번째 결과 가져오기
+      if (place && place.rating) {
+        return place.rating; // 별점 정보 반환
+      } else {
+        console.log("Rating not found for the specified place.");
       }
     } catch (error) {
-      console.error(`Error fetching rating for place ID ${placeId}:`, error);
+      console.error(`Error fetching rating for ${placeName}:`, error);
     }
     return null;
+  };
+
+  // 모든 장소에 대해 별점 데이터를 가져오는 함수
+  const fetchRatingsForPlaces = async (places) => {
+    const newRatings = {};
+
+    for (const place of places) {
+      const rating = await fetchRating(place.rstrNm);  // 식당명으로 별점 가져오기
+      if (rating) {
+        newRatings[place.rstrNm] = rating;
+      }
+    }
+
+    setRatings(newRatings);  // 별점 상태 업데이트
   };
 
   // 모든 장소에 대해 이미지를 가져오는 함수
@@ -79,28 +98,11 @@ const FoodRecom = () => {
     setImages(newImages);  // 이미지 상태 업데이트
   };
 
-  // 모든 장소에 대해 별점 데이터를 가져오는 함수
-  const fetchRatingsForPlaces = async (places) => {
-    const newRatings = {};
-
-    for (const place of places) {
-      const placeId = place.googlePlaceId;  // 각 장소의 고유 Place ID가 있다고 가정
-      const rating = await fetchRating(placeId);
-      if (rating) {
-        newRatings[place.rstrNm] = rating;
-      }
-    }
-
-    setRatings(newRatings);  // 별점 상태 업데이트
-  };
-
   // 최종 렌더링할 장소 리스트 (정렬된 리스트를 우선 사용)
   const renderPlaces = sortedPlaces.length > 0 ? sortedPlaces : places;
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '20px' }}>추천 맛집</h2>
-
+    <div style={{ padding: '0 20px 20px 20px ' }}>
       {/* NearbyFoodPlace 컴포넌트로 글자순/거리순 정렬 처리 */}
       <NearbyFoodPlace 
         places={places} 

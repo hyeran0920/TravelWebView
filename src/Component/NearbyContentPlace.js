@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { FaExchangeAlt } from 'react-icons/fa'; // react-icons에서 양방향 화살표 아이콘 가져오기
 
 const NearbyContentPlace = ({ places, onSorted, onLocationAllowed }) => {
   const [sortedPlaces, setSortedPlaces] = useState([]); // 정렬된 장소 리스트
@@ -27,7 +28,6 @@ const NearbyContentPlace = ({ places, onSorted, onLocationAllowed }) => {
           const userLat = position.coords.latitude;
           const userLon = position.coords.longitude;
 
-          // 장소를 가까운 순으로 정렬하고 각 장소에 거리 값을 추가
           const sortedList = places.map(place => {
             if (place.lc_LA && place.lc_LO) { // 좌표 값이 있는지 확인
               const distance = calculateDistance(userLat, userLon, place.lc_LA, place.lc_LO);
@@ -73,12 +73,10 @@ const toggleSortOrder = () => {
   // 글자순 정렬 처리
   const handleAlphabeticalSort = () => {
     if (isLocationAllowed) {
-      // 위치 허용된 경우: 거리 포함해서 글자순 정렬
       const sortedByAlphabetWithDistance = [...sortedPlaces].sort((a, b) => a.place_Name.localeCompare(b.place_Name));
       setSortedPlaces(sortedByAlphabetWithDistance); // 정렬된 리스트 업데이트
       onSorted(sortedByAlphabetWithDistance); // 부모 컴포넌트로 정렬된 리스트 전달
     } else {
-      // 위치 차단된 경우: 거리 없이 글자순 정렬
       const sortedByAlphabet = [...places].sort((a, b) => a.place_Name.localeCompare(b.place_Name));
       setSortedPlaces(sortedByAlphabet); // 정렬된 리스트 업데이트
       onSorted(sortedByAlphabet); // 부모 컴포넌트로 정렬된 리스트 전달
@@ -87,11 +85,18 @@ const toggleSortOrder = () => {
   };
 
   return (
-    <div className="flex mb-3 space-x-4">
-    <button onClick={toggleSortOrder} className="p-3 text-white transition duration-300 ease-in-out transform bg-blue-500 rounded-lg shadow-md hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 hover:scale-105">
-      {isDistanceSorted ? '글자순 보기' : '거리순 보기'}
-    </button>
-  </div>
+    <div className="flex justify-end mb-3">
+      <button 
+        onClick={toggleSortOrder} 
+        className="pb-2 text-white transition duration-300 ease-in-out transform focus:ring-4 focus:ring-blue-300 hover:scale-105 flex items-center px-2 py-2"
+      >
+        {/* 정렬 상태에 따라 다른 텍스트 표시 */}
+        <FaExchangeAlt size={18} style={{ color: '#999' }} className="mr-2" /> {/* 아이콘 추가 */}
+        <span className="text-gray-500">
+          {isDistanceSorted ? 'km' : 'abc'} {/* 텍스트만 회색으로 설정 */}
+        </span>
+      </button>
+    </div>
   );
 };
 

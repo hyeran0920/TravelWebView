@@ -79,7 +79,7 @@ const AddrList = () => {
                   className="absolute inset-0 object-cover object-top w-full h-full rounded-lg"
                 />
               )}
-              <div className="absolute bottom-0 left-0 w-full p-5 text-lg font-bold text-left text-white bg-black bg-opacity-50">
+              <div className="absolute bottom-0 left-0 w-full p-5 text-lg font-bold text-left text-white">
               {address.title_NM} 
                 <p className="mt-1 text-sm text-gray-200">{address.place_Name}</p> 
               </div>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { FaArrowUp } from 'react-icons/fa';  // react-icons에서 화살표 아이콘 임포트
 
 const TopButton = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -7,7 +8,7 @@ const TopButton = () => {
     const scrollableElement = document.querySelector('.content');  // .content 요소 선택
 
     const toggleVisibility = () => {
-      if (scrollableElement.scrollTop > 350) {  // 스크롤이 300px 이상일 때 버튼 표시
+      if (scrollableElement.scrollTop > 350) {  // 스크롤이 350px 이상일 때 버튼 표시
         setIsVisible(true);
       } else {
         setIsVisible(false);
@@ -33,7 +34,7 @@ const TopButton = () => {
     <div className="top-button">
       {isVisible && (
         <button onClick={scrollToTop} style={buttonStyle}>
-          Top
+          <FaArrowUp /> {/* 화살표 아이콘 표시 */}
         </button>
       )}
     </div>
@@ -43,17 +44,16 @@ const TopButton = () => {
 const buttonStyle = {
   position: 'fixed',
   bottom: '60px',
-  right: '40px',
+  right: '20px',
   backgroundColor: 'white',
-  color: 'blue',
+  color: '#79353e',
   border: 'none',
-  padding: '10px 20px',
-  borderRadius: '5px',
+  padding: '7px',
+  borderRadius: '30px',
   cursor: 'pointer',
-  fontSize: '16px',
+  fontSize: '17px',  // 화살표 크기 조정
   zIndex: '9999',
   boxShadow: '0 2px 5px rgba(0, 0, 0, 0.2)',  // 그림자 추가
-  
 };
 
 export default TopButton;

@@ -98,9 +98,16 @@ const SearchListComponent = () => {
                   />
                 )}
                 <div className="relative z-10 top-2">
-                  <div className="text-left text-white shadow-lg">{result.title_NM}</div> {/* 제목 출력 */}
-                  <div className="text-left text-white shadow-sm">촬영지: {result.place_Name}</div> {/* 촬영지 출력 */}
-                  <div className="text-left text-white shadow-sm">주소: {result.addr}</div> {/* 주소 출력 */}
+                <div className="text-left text-white" style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)' }}>
+  {result.title_NM}
+</div> {/* 제목 출력 */}
+<div className="text-left text-white" style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)' }}>
+  {result.place_Name}
+</div> {/* 촬영지 출력 */}
+<div className="text-left text-white" style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)' }}>
+  {result.addr}
+</div> {/* 주소 출력 */}
+
                 </div>
               </div>
             ))

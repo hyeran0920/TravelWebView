@@ -11,6 +11,9 @@ module.exports = {
           '3xs': '0.5rem',   // 8px
           '4xs': '0.375rem', // 6px
           '5xs': '0.25rem',  // 4px
+        },        
+        colors: {
+          customRed: '#79353e', // 원하는 색상 추가
         },
       },
     },

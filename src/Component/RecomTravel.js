@@ -41,9 +41,9 @@ const RecomTravel = () => {
   }
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '20px' }}>지역별 촬영지</h2>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+<div style={{ padding: '0 20px 20px 20px' }}>
+<h2 style={{ fontSize: '18px', fontWeight: 'bold', marginBottom: '10px',marginTop: '25px', textAlign: 'left' }}>지역별 촬영지</h2>
+<div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
         {locations.map((place, index) => (
           <div
             key={index}
