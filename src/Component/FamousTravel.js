@@ -6,8 +6,7 @@ import { useNavigate } from 'react-router-dom'; // useNavigate 임포트
 const FamousTravel = () => {
   const [destinations, setDestinations] = useState([]);
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [selectedSubIndex, setSelectedSubIndex] = useState(0);
-  const [autoPlay, setAutoPlay] = useState(true);
+  const [autoPlay, setAutoPlay] = useState(true); // 자동 전환 활성화
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [images, setImages] = useState({});
@@ -18,7 +17,6 @@ const FamousTravel = () => {
     axios.get('http://localhost:8080/content/random')  // 백엔드의 새로운 엔드포인트로 요청
       .then(response => {
         const randomDestinations = response.data;
-        
         setDestinations(randomDestinations); // 7개의 촬영지 리스트 설정
         setLoading(false); // 로딩 완료
         fetchImagesForLocations(randomDestinations); // 선택한 7개 촬영지에 대해 이미지 가져오기
@@ -29,97 +27,45 @@ const FamousTravel = () => {
       });
   }, []);
 
+  // 자동 슬라이드 전환
   useEffect(() => {
     if (autoPlay) {
       const interval = setInterval(() => {
-        setSelectedSubIndex((prevSubIndex) => {
-          if (prevSubIndex === 2) {
-            setSelectedIndex((prevIndex) => (prevIndex + 3) % destinations.length);
-            return 0;
-          }
-          return prevSubIndex + 1;
-        });
-      }, 3000); // 각 슬라이드가 3초마다 순서대로 커짐
+        setSelectedIndex((prevIndex) => (prevIndex + 1) % destinations.length);
+      }, 3000); // 3초마다 슬라이드 전환
 
       return () => clearInterval(interval); // 클린업 함수
     }
-  }, [autoPlay, destinations]);
-
-  const handleNext = () => {
-    setSelectedSubIndex(0);
-    setSelectedIndex((prevIndex) => (prevIndex + 3) % destinations.length);
-    setAutoPlay(false);
-  };
-
-  const handlePrev = () => {
-    setSelectedSubIndex(0);
-    setSelectedIndex((prevIndex) => (prevIndex - 3 + destinations.length) % destinations.length);
-    setAutoPlay(false);
-  };
+  }, [autoPlay, destinations.length]);
 
   // 장소 박스를 클릭하면 해당 작품의 장소를 선택하고 페이지로 이동하는 함수
   const handlePlaceClick = (contentTitle, placeName) => {
     navigate(`/InformationByPlace/${contentTitle}/${placeName}`); // contentTitle과 placeName으로 URL 이동
   };
 
-  const renderSlides = () => {
-    const startIndex = selectedIndex;
-    const slidesToShow = destinations.slice(startIndex, startIndex + 3).concat(
-      destinations.slice(0, Math.max(0, (startIndex + 3) - destinations.length))
-    );
+  // 슬라이드의 이미지 URL만 반환
+  const getSlideImageUrl = () => {
+    const currentDestination = destinations[selectedIndex];
 
-    return slidesToShow.map((dest, index) => {
-      const isSelected = selectedSubIndex === index;
+    if (!currentDestination) return Home; // 기본 이미지
 
-      // 여기서 backgroundImageUrl 변수를 선언합니다.
-      const backgroundImageUrl = images[dest.place_Name]
-        ? images[dest.place_Name]
-        : Home;
-
-      return (
-        <div
-          key={index}
-          onClick={() => handlePlaceClick(dest.title_NM, dest.place_Name)} // 이미지 클릭 시 contentTitle과 placeName으로 이동
-          style={{
-            flex: isSelected ? '3' : '1',
-            height: '200px',
-            backgroundColor: 'lightblue', // fallback 배경색 => 이거 뭐로 바꾸지
-            backgroundImage: `url(${backgroundImageUrl})`, // backgroundImage 사용
-            backgroundSize: 'cover', // 이미지를 배경으로 설정하고 크기 조절
-            backgroundPosition: 'center', // 배경 이미지의 위치
-            cursor: 'pointer',
-            transition: 'flex 1.5s ease, transform 1.5s ease',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: '24px',
-            color: 'white',
-            transform: isSelected ? 'scale(1.1)' : 'scale(1)',
-          }}
-        >
-          <span style={{ opacity: 0 }}>{dest.title_NM}</span>
-        </div>
-      );
-    });
+    // 이미지 URL 가져오기
+    return images[currentDestination.place_Name]
+      ? images[currentDestination.place_Name]
+      : Home;  // 이미지가 없으면 기본 이미지 사용
   };
 
   // 장소 이름을 이용해 이미지를 가져오는 함수
   const fetchImage = async (placeName) => {
     try {
-      // console.log(`Fetching image for place: ${placeName}`);
       const response = await axios.get('http://localhost:8080/api/search/place-photo', {
         params: { query: placeName },
       });
 
-      // console.log(`Full API response for ${placeName}:`, response);
-
       const place = response.data.candidates[0];
       if (place && place.photos && place.photos.length > 0) {
         const photoUrl = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${place.photos[0].photo_reference}&key=AIzaSyCTVgQ9PgD16SIcmOd16eT2TuYl5OwhCY0`;
-        // console.log(`Photo URL for ${placeName}:`, photoUrl);
         return photoUrl;
-      } else {
-        // console.log(`No photo available for ${placeName}`);
       }
     } catch (error) {
       console.error(`Error fetching image for ${placeName}:`, error);
@@ -139,7 +85,6 @@ const FamousTravel = () => {
       }
     }
 
-    // console.log('Fetched images:', newImages);
     setImages(newImages); // 이미지 상태 업데이트
   };
 
@@ -158,46 +103,49 @@ const FamousTravel = () => {
     return <p>미리보기가 제공되지 않습니다.</p>;
   }
 
+  const currentDestination = destinations[selectedIndex]; // 현재 선택된 촬영지 정보 가져오기
+
+  // 슬라이드의 이미지 URL을 가져와서 배경 이미지로 사용
   return (
-    <div style={{ padding: '20px', textAlign: 'center' }}>
-      <h2 style={{ fontSize: '22px', fontWeight: 'bold', marginBottom: '10px', textAlign: 'left' }}>촬영지 미리보기</h2>
-      <div style={{ display: 'flex', overflow: 'hidden', width: '100%', maxWidth: '900px', margin: '0 auto', position: 'relative' }}>
-        <button
-          onClick={handlePrev}
-          style={{
-            position: 'absolute',
-            left: '2px',
-            top: '50%',
-            transform: 'translateY(-50%)',
-            backgroundColor: 'transparent',
-            border: 'none',
-            color: '#fff',
-            fontSize: '24px',
-            cursor: 'pointer',
-            zIndex: 1,
-          }}
-        >
-          &#9664;
-        </button>
-        {/* 이미 가져온 캠핑장 데이터 화면에 렌더링 */}
-        {renderSlides()}
-        <button
-          onClick={handleNext}
-          style={{
-            position: 'absolute',
-            right: '2px',
-            top: '50%',
-            transform: 'translateY(-50%)',
-            backgroundColor: 'transparent',
-            border: 'none',
-            fontSize: '24px',
-            color: '#fff',
-            cursor: 'pointer',
-            zIndex: 1,
-          }}
-        >
-          &#9654;
-        </button>
+    <div 
+      style={{ 
+        width: '100%', 
+        height: '43vh',  // 화면의 40% 높이로 설정
+        position: 'relative',  // 텍스트를 이미지 위에 겹치기 위해 설정
+        backgroundImage: `url(${getSlideImageUrl()})`, // 이미지 URL을 배경 이미지로 사용
+        backgroundSize: 'cover',  // 이미지를 부모 div에 맞추어 채움
+        backgroundPosition: 'center', // 이미지의 중앙을 기준으로 맞춤
+        backgroundRepeat: 'no-repeat',  // 이미지가 반복되지 않도록 설정
+      }}
+    >
+            <style>
+        {`
+@font-face {
+    font-family: 'paybooc-Bold';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_20-07@1.0/paybooc-Bold.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+        `}
+      </style>
+
+      {/* placeName을 이미지 하단에 표시 */}
+      <div 
+  style={{ 
+    position: 'absolute', 
+    bottom: '10px',  // 이미지 하단에서 10px 위에 위치
+    color: 'white', 
+    fontSize: '24px', 
+    padding: '5px 10px',  // 텍스트 주변의 패딩
+    textAlign: 'center',  // 텍스트를 가운데 정렬
+    fontWeight: 800,  // 세미볼드 설정
+    width: '100%', // 텍스트가 div 안에서 가운데에 위치하도록 설정
+    fontFamily: 'paybooc-Bold',
+    textShadow: '2px 2px 4px rgba(0, 0, 0, 0.2)' // 글자에 그림자 적용
+  }}
+>
+
+        {currentDestination && currentDestination.place_Name} {/* placeName 텍스트 표시 */}
       </div>
     </div>
   );

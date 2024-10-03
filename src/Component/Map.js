@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
+import { BiCurrentLocation } from 'react-icons/bi';  // 또는 MdMyLocation 사용 가능
 
 // Leaflet에서 마커 아이콘을 설정 (기본 아이콘 경로 수정)
 import 'leaflet-defaulticon-compatibility';
@@ -31,6 +32,7 @@ const greenIcon = L.icon({
 const OpenStreetMapComponent = () => {
   const [allContentPlaceList, setAllContentPlaceList] = useState([]); // 전체 촬영지 리스트
   const [allFoodPlaceList, setAllFoodPlaceList] = useState([]); //전체 맛집 리스트
+  const [selectedLocation, setSelectedLocation] = useState(null); // 선택된 마커 정보
   const [error, setError] = useState(null); // 에러 상태 추가
   const [loading, setLoading] = useState(true); // 로딩 상태 관리
   const [userLocation, setUserLocation] = useState([37.5665, 126.9780]); // 기본 위치는 서울
@@ -107,50 +109,87 @@ const OpenStreetMapComponent = () => {
     return <p>No content places on map available.</p>;
   }
 
-    // 데이터가 없을 경우 처리
-    if (allFoodPlaceList.length === 0) {
-      return <p>No food places on map available.</p>;
-    }
+  if (allFoodPlaceList.length === 0) {
+    return <p>No food places on map available.</p>;
+  }
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="relative flex flex-col h-screen">
+      <style>
+        {`
+          .leaflet-control-zoom {
+            top: 600px !important; /* 확대/축소 버튼을 아래로 70px 이동 */
+          }
+
+          .location-icon {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* 아이콘에 그림자 추가 */
+          }
+        `}
+      </style>
       {/* 내 위치 검색 버튼 */}
-      <div className="text-center my-3">
-        <button onClick={handleSearchMyLocation} className="px-4 py-2 bg-blue-500 text-white rounded">
-          내 위치 검색
+      <div className="fixed bottom-20 right-2 z-50">
+        <button onClick={handleSearchMyLocation} className="px-4 py-2 text-gray-600">
+          <BiCurrentLocation size={30} className="location-icon" />
         </button>
       </div>
 
       {/* 지도 영역 */}
-      <div className="flex-grow">
-        <MapContainer key={mapKey} center={userLocation} zoom={15} className="w-full h-full">
-          {/* OpenStreetMap 타일 레이어 추가 */}
+      <div className="flex-grow relative">
+        <MapContainer key={mapKey} center={userLocation} zoom={15} className="w-full h-full z-0">
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           />
 
-          {/* 마커들을 추가 */}
+          {/* 촬영지 마커들 */}
           {allContentPlaceList.map((location, index) => (
-            <Marker key={index} position={[location.lc_LA, location.lc_LO]} icon={redIcon}>
-              <Popup>{location.place_Name}<br /> {location.title_NM} <br /> {location.addr}</Popup> {/* 마커 클릭 시 표시할 팝업 */}
-            </Marker>
+            <Marker
+              key={index}
+              position={[location.lc_LA, location.lc_LO]}
+              icon={redIcon}
+              eventHandlers={{
+                click: () => {
+                  setSelectedLocation({
+                    placeName: location.place_Name,
+                    title: location.title_NM,
+                    address: location.addr
+                  });
+                },
+              }}
+            />
           ))}
 
-          {/* 마커들을 추가 */}
+          {/* 맛집 마커들 */}
           {allFoodPlaceList.map((location, index) => (
-            <Marker key={index} position={[location.foodMapLatPos, location.foodMapLotPos]} icon={greenIcon}>
-              <Popup>{location.foodMapPlaceName}<br /> {location.foodMapRoadAddr}</Popup> {/* 마커 클릭 시 표시할 팝업 */}
-            </Marker>
+            <Marker
+              key={index}
+              position={[location.foodMapLatPos, location.foodMapLotPos]}
+              icon={greenIcon}
+              eventHandlers={{
+                click: () => {
+                  setSelectedLocation({
+                    placeName: location.foodMapPlaceName,
+                    address: location.foodMapRoadAddr
+                  });
+                },
+              }}
+            />
           ))}
 
         </MapContainer>
       </div>
 
-      {/* 하단 바 영역 */}
-      <div className="bg-gray-800 text-white text-center py-3">
-        하단 바 내용 (예: 네비게이션 바)
-      </div>
+      {/* 하단 바 영역 (선택된 마커 정보 표시) */}
+      {selectedLocation && (
+        <div
+          className="fixed left-1/2 transform -translate-x-1/2 w-[90%] bg-white text-black text-center py-3 z-50 rounded-lg p-2"
+          style={{ bottom: '60px' }}
+        >
+          <p className="text-lg"><strong>{selectedLocation.placeName}</strong></p>
+          {selectedLocation.title && <p>{selectedLocation.title}</p>}
+          <p>{selectedLocation.address}</p>
+        </div>
+      )}
     </div>
   );
 };

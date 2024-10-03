@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { FaExchangeAlt } from 'react-icons/fa'; // react-icons에서 양방향 화살표 아이콘 가져오기
+
 
 const NearbyFoodPlace = ({ places, onSorted, onLocationAllowed }) => {
   const [sortedPlaces, setSortedPlaces] = useState([]); // 정렬된 음식점 리스트
@@ -92,11 +94,26 @@ const toggleSortOrder = () => {
   };
 
   return (
-    <div className="flex mb-3 space-x-4">
-    <button onClick={toggleSortOrder} className="p-3 text-white transition duration-300 ease-in-out transform bg-blue-500 rounded-lg shadow-md hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 hover:scale-105">
-      {isDistanceSorted ? '글자순 보기' : '거리순 보기'}
+<div className="flex justify-end">
+<button 
+      onClick={toggleSortOrder} 
+      className="pb-2 text-white transition duration-300 ease-in-out transform focus:ring-4 focus:ring-blue-300 hover:scale-105 flex items-center"
+    >
+      {/* 정렬 상태에 따라 다른 텍스트 표시 */}
+      {isDistanceSorted ? (
+        <>
+          <FaExchangeAlt size={18} style={{ color: '#999' }} className="mr-2" /> {/* 아이콘의 색상을 흰색으로 설정 */}
+          <span className="mr-2 text-gray-500">km</span> {/* 텍스트만 회색으로 설정 */}
+        </>
+      ) : (
+        <>
+          <FaExchangeAlt size={18} style={{ color: '#999' }} className="mr-2" /> {/* 아이콘의 색상을 흰색으로 설정 */}
+          <span className="mr-2 text-gray-500">abc</span> {/* 텍스트만 회색으로 설정 */}
+        </>
+      )}
     </button>
   </div>
+
   );
 };
 

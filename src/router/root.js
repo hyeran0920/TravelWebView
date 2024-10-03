@@ -14,6 +14,7 @@ const ContentLocationList = lazy(() => import("../Page/ContentLocationList"));
 const LocationInformation = lazy(() => import("../Page/LocationInformation"));
 const Camera = lazy(() => import("../Page/Camera"));
 const SearchList = lazy(() => import("../Page/SearchList.js"));
+const FoodRecom = lazy(() => import("../Component/FoodRecom.js"));
 
 const root = createBrowserRouter([
   {
@@ -120,11 +121,20 @@ const root = createBrowserRouter([
       </Suspense>
     )
   },  {
-    path: "/Map",  // 카메라 경로 추가
+    path: "/Map", 
     element: (
       <Suspense fallback={<div>Loading...</div>}>
         <Layout>
         <Map />
+        </Layout>
+        </Suspense>
+    )
+  },{
+    path: "/FoodRecom",  
+    element: (
+      <Suspense fallback={<div>Loading...</div>}>
+        <Layout>
+        <FoodRecom />
         </Layout>
         </Suspense>
     )

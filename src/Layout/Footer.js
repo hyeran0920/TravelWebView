@@ -1,61 +1,58 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // useNavigate 훅 import
-import Map from '../Component/Map';
+import { useNavigate } from 'react-router-dom';
+import { AiFillHome } from 'react-icons/ai';
+import { GiForkKnifeSpoon } from 'react-icons/gi';
+import { FaMapMarkedAlt, FaFilm } from 'react-icons/fa';
+import { MdLiveTv } from 'react-icons/md';
 
+const Nav = () => {
+  const [active, setActive] = useState('Home');
+  const navigate = useNavigate();
 
-const Footer = () => {
-  const [active, setActive] = useState('home');
-  const navigate = useNavigate(); // 경로 이동을 위한 useNavigate 훅 사용
-
-  const handleNavClick = (navItem) => {
-    setActive(navItem);
-    if (navItem === 'home') {
-      navigate('/main'); // 'home' 버튼을 클릭하면 '/main' 경로로 이동
-    } else if (navItem === 'Map') {
-      navigate('/Map'); // '지도' 버튼을 클릭하면 '/map' 경로로 이동
-    } else if (navItem === 'back') {
-      navigate(-1); // '뒤로가기' 버튼을 클릭하면 이전 페이지로 이동
+  const handleClick = (category) => {
+    setActive(category);
+    if (category === '맛집') {
+      navigate('/Food');
+    }
+    if (category === '지도') {
+      navigate('/Map');
+    }
+    if (category === '영화') {
+      navigate('/Movie');
+    }
+    if (category === '드라마') {
+      navigate('/Drama');
+    }
+    if (category === 'Home') {
+      navigate('/Main');
     }
   };
 
+  const categories = [
+    { name: 'Home', icon: <AiFillHome /> },
+    { name: '영화', icon: <FaFilm /> },
+    { name: '드라마', icon: <MdLiveTv /> },
+    { name: '맛집', icon: <GiForkKnifeSpoon /> },
+    { name: '지도', icon: <FaMapMarkedAlt /> },
+  ];
+
   return (
-    <div>
-      <div className="fixed bottom-0 left-0 right-0 flex justify-around p-4 bg-white shadow-md">
-        {/* 뒤로가기 버튼 */}
+    <div className="fixed bottom-0 left-0 right-0 flex justify-around p-2 shadow-md bg-[#fff]">
+      {categories.map((category) => (
         <button
-          onClick={() => handleNavClick('back')}
-          className={`flex flex-col items-center ${
-            active === 'back' ? 'text-blue-600' : 'text-gray-400'
-          }`}
+          key={category.name}
+          onClick={() => handleClick(category.name)}
+          className={`flex flex-col items-center text-lg font-medium ${active === category.name
+              ? 'text-[#79353e] bg-[#eee] rounded-2xl px-4 py-2'
+              : 'text-gray-700 px-4 py-2 bg-[#fff] rounded-2xl'
+            }`}
+          style={{ fontWeight: active === category.name ? 'bold' : 'normal' }}
         >
-          <i className="text-xl fas fa-arrow-left"></i>
-          <span className="text-xs">Back</span>
+          {category.icon}
         </button>
-
-        {/* 홈 버튼 */}
-        <button
-          onClick={() => handleNavClick('home')}
-          className={`flex flex-col items-center ${
-            active === 'home' ? 'text-blue-600' : 'text-gray-400'
-          }`}
-        >
-          <i className="text-xl fas fa-home"></i>
-          <span className="text-xs">Home</span>
-        </button>
-
-        {/* 지도 버튼 */}
-        <button
-          onClick={() => handleNavClick('Map')}
-          className={`flex flex-col items-center ${
-            active === 'map' ? 'text-blue-600' : 'text-gray-400'
-          }`}
-        >
-          <i className="text-xl fas fa-map-marker-alt"></i>
-          <span className="text-xs">Map</span>
-        </button>
-      </div>
+      ))}
     </div>
   );
 };
 
-export default Footer;
+export default Nav;
