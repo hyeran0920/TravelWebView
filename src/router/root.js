@@ -15,6 +15,7 @@ const LocationInformation = lazy(() => import("../Page/LocationInformation"));
 const Camera = lazy(() => import("../Page/Camera"));
 const SearchList = lazy(() => import("../Page/SearchList.js"));
 const FoodRecom = lazy(() => import("../Component/FoodRecom.js"));
+const AllFestival = lazy(() => import("../Component/AllFestival.js"));
 
 const root = createBrowserRouter([
   {
@@ -135,6 +136,15 @@ const root = createBrowserRouter([
       <Suspense fallback={<div>Loading...</div>}>
         <Layout>
         <FoodRecom />
+        </Layout>
+        </Suspense>
+    )
+  },{
+    path: "/festivals",  
+    element: (
+      <Suspense fallback={<div>Loading...</div>}>
+        <Layout>
+        <AllFestival />
         </Layout>
         </Suspense>
     )

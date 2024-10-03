@@ -26,7 +26,7 @@ const Header = () => {
   };
 
   return (
-    <div>
+    <div className='bg-white mt-20'>
       <style>
         {`
 @font-face {
@@ -38,15 +38,15 @@ const Header = () => {
         `}
       </style>
       {/* 상단 고정된 헤더 */}
-      <div className="fixed top-8 left-0 right-0 z-50 flex justify-between items-center px-4 py-2 bg-transparent">
+      <div className="fixed top-7 left-0 right-0 z-50 flex justify-between items-center px-4 py-2  bg-white">
         {/* Fik! 로고 */}
         <button
   onClick={() => navigate('/main')}
   style={{
     fontFamily: 'LeferiPoint-BlackObliqueA',
     fontSize: '24px',
-    color: '#fff',
-    textShadow: '2px 2px 2px rgba(0, 0, 0, 0.1)' // 글자에 그림자 적용
+    color: '#79353E',
+    textShadow: '5px 3px 3px rgba(1, 1, 1, 0.2)' // 글자에 그림자 적용
   }}
 >
   Film In Korea
@@ -67,7 +67,7 @@ const Header = () => {
             />
 
             {/* 돋보기 아이콘 */}
-            <button type="button" onClick={handleSvgClick} className="absolute inset-y-0 right-2 flex items-center text-white">
+            <button type="button" onClick={handleSvgClick} className="absolute inset-y-0 right-2 flex items-center text-black">
             <FaSearch size={20} style={{ filter: 'drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.5))' }} />
             </button>
           </form>

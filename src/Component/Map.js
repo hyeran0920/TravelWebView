@@ -29,9 +29,20 @@ const greenIcon = L.icon({
   shadowSize: [41, 41],
 });
 
+// 커스텀 마커 아이콘 생성 (오렌지) - 축제
+const orangeIcon = L.icon({
+  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-orange.png',
+  iconSize: [25, 41], // 기본 마커 크기
+  iconAnchor: [12, 41], // 앵커 포인트 (아이콘의 하단 중앙을 지정)
+  popupAnchor: [1, -34],
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.4/images/marker-shadow.png',
+  shadowSize: [41, 41],
+});
+
 const OpenStreetMapComponent = () => {
   const [allContentPlaceList, setAllContentPlaceList] = useState([]); // 전체 촬영지 리스트
   const [allFoodPlaceList, setAllFoodPlaceList] = useState([]); //전체 맛집 리스트
+  const [currentFestivalList, setCurrentFestivalList] = useState([]); // 진행중인 축제 리스트
   const [selectedLocation, setSelectedLocation] = useState(null); // 선택된 마커 정보
   const [error, setError] = useState(null); // 에러 상태 추가
   const [loading, setLoading] = useState(true); // 로딩 상태 관리
@@ -93,6 +104,22 @@ const OpenStreetMapComponent = () => {
       });
   }, []);
 
+  useEffect(() => {
+    // 촬영지 데이터를 가져오기
+    setLoading(true);
+    axios
+      .get('http://localhost:8080/festival/current')
+      .then((response) => {
+        setCurrentFestivalList(response.data); // 응답 데이터를 상태로 설정 (문자열 리스트)
+        setLoading(false); // 로딩 완료
+      })
+      .catch((error) => {
+        console.error('데이터 가져오는 중 에러 발생!', error);
+        setError('데이터를 가져오는 중 오류가 발생했습니다.'); // 에러 메시지 설정
+        setLoading(false); // 에러 발생 시 로딩 종료
+      });
+  }, []);
+
 
   // 로딩 중일 때 표시
   if (loading) {
@@ -127,9 +154,9 @@ const OpenStreetMapComponent = () => {
         `}
       </style>
       {/* 내 위치 검색 버튼 */}
-      <div className="fixed bottom-20 right-2 z-50">
+      <div className="fixed bottom-20 right-2 z-[100]">
         <button onClick={handleSearchMyLocation} className="px-4 py-2 text-gray-600">
-          <BiCurrentLocation size={30} className="location-icon" />
+          <BiCurrentLocation size={40} className="location-icon" color='blue' />
         </button>
       </div>
 
@@ -176,6 +203,26 @@ const OpenStreetMapComponent = () => {
             />
           ))}
 
+          {/* 현재 진행 축제 마커들 */}
+          {currentFestivalList.map((location, index) => (
+            <Marker
+              key={index}
+              position={[location.festival_la, location.festival_lo]}
+              icon={orangeIcon}
+              eventHandlers={{
+                click: () => {
+                  setSelectedLocation({
+                    placeName: location.festival_name,
+                    address: location.festival_addr,
+                    startdate : location.festival_begin_date,
+                    enddate : location.festival_end_date,
+                    hompage : location.festival_homepage
+                  });
+                },
+              }}
+            />
+          ))}
+
         </MapContainer>
       </div>
 
@@ -187,7 +234,21 @@ const OpenStreetMapComponent = () => {
         >
           <p className="text-lg"><strong>{selectedLocation.placeName}</strong></p>
           {selectedLocation.title && <p>{selectedLocation.title}</p>}
+
           <p>{selectedLocation.address}</p>
+
+          {selectedLocation.startdate && selectedLocation.enddate && 
+          (<p>{selectedLocation.startdate} ~ {selectedLocation.enddate}</p>)
+          }
+
+          {selectedLocation.hompage && (
+            <p >
+              <a className="text-blue-500 font-bold" href={selectedLocation.hompage} target="_blank" rel="noopener noreferrer">
+                홈페이지 바로가기 &gt;
+              </a>
+            </p>
+          )}
+
         </div>
       )}
     </div>
