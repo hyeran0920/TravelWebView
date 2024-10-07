@@ -25,6 +25,7 @@ FiK는 **K-콘텐츠 팬들**을 위해 드라마나 영화 촬영지를 탐방�
 ### [Figma에서 디자인 보기](https://www.figma.com/design/iWB7Vsyw31dtXfEzJ2lgtf/Tourisum--Traveling-Website-Landing-Page-(Community)?node-id=0-1&t=LnstbcAE90Ek68QK-1)  
 ### [PPT 보기](https://www.canva.com/design/DAGSa6qMh08/Eq4iolPHyof-ODM4-EB00g/view?utm_content=DAGSa6qMh08&utm_campaign=designshare&utm_medium=link&utm_source=editor)
 
+
 ---
 
 <div style="display: flex; align-items: center;">
@@ -36,6 +37,7 @@ FiK는 **K-콘텐츠 팬들**을 위해 드라마나 영화 촬영지를 탐방�
 </div>
 
 ---
+
 
 <div style="display: flex; align-items: center;">
   <img src="https://github.com/user-attachments/assets/75bc1903-8a8d-498d-bb1b-dcdfc9640211" align="left" width="300"/>
@@ -57,6 +59,7 @@ FiK는 **K-콘텐츠 팬들**을 위해 드라마나 영화 촬영지를 탐방�
 
 ---
 
+
 <div style="display: flex; align-items: center;">
   <img src="https://github.com/user-attachments/assets/a841a88e-47e6-49ed-92a0-987395ba8c32" align="left" width="300"/>
   <div style="padding-left: 20px;">
@@ -66,6 +69,7 @@ FiK는 **K-콘텐츠 팬들**을 위해 드라마나 영화 촬영지를 탐방�
 </div>
 
 ---
+
 
 <div style="display: flex; align-items: center;">
   <img src="https://github.com/user-attachments/assets/c0f28798-c108-40ed-8738-bbb9e76bcfc3" align="left" width="300"/>
@@ -77,6 +81,7 @@ FiK는 **K-콘텐츠 팬들**을 위해 드라마나 영화 촬영지를 탐방�
 
 ---
 
+
 <div style="display: flex; align-items: center;">
   <img src="https://github.com/user-attachments/assets/3f08b587-350c-4a41-b444-bdd77714663b" align="left" width="300"/>
   <div style="padding-left: 20px;">
@@ -87,6 +92,7 @@ FiK는 **K-콘텐츠 팬들**을 위해 드라마나 영화 촬영지를 탐방�
 
 ---
 
+
 <div style="display: flex; align-items: center;">
   <img src="https://github.com/user-attachments/assets/a613a8c1-e504-4eb9-8ed4-a32164b4c16b" align="left" width="300"/>
   <div style="padding-left: 20px;">
@@ -96,6 +102,7 @@ FiK는 **K-콘텐츠 팬들**을 위해 드라마나 영화 촬영지를 탐방�
 </div>
 
 ---
+
 
 <div style="display: flex; align-items: center;">
   <img src="https://github.com/user-attachments/assets/b2590699-5f85-45f0-8fe9-da7bc734847f" align="left" width="300"/>
@@ -108,6 +115,8 @@ FiK는 **K-콘텐츠 팬들**을 위해 드라마나 영화 촬영지를 탐방�
 </div>
 
 ---
+
+
 
 ## Fik의 기대효과
 - 한류 관광 안내 길잡이
