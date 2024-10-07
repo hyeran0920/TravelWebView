@@ -25,13 +25,7 @@ FiK는 **K-콘텐츠 팬들**을 위해 드라마나 영화 촬영지를 탐방�
 ### [Figma에서 디자인 보기](https://www.figma.com/design/iWB7Vsyw31dtXfEzJ2lgtf/Tourisum--Traveling-Website-Landing-Page-(Community)?node-id=0-1&t=LnstbcAE90Ek68QK-1)  
 ### [PPT 보기](https://www.canva.com/design/DAGSa6qMh08/Eq4iolPHyof-ODM4-EB00g/view?utm_content=DAGSa6qMh08&utm_campaign=designshare&utm_medium=link&utm_source=editor)
 
-
-
----
-
-![FiK 화면1](https://github.com/user-attachments/assets/50554b93-8942-4311-8275-0a564f438353)  
-**FiK**는 'Film In Korea'의 줄임말입니다.  
-**FiK**는 사용자가 촬영지를 선택(Pick)하고, 그곳에서 특별한 사진(Pic)을 남길 수 있는 플랫폼입니다.
+<br>
 
 ---
 
