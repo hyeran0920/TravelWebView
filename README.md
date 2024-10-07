@@ -8,8 +8,8 @@ FiK는 **K-콘텐츠 팬들**을 위해 드라마나 영화 촬영지를 탐방�
 
 <img src="https://github.com/user-attachments/assets/50554b93-8942-4311-8275-0a564f438353" align="left" width="300" />
 
-- **FiK**는 'Film In Korea'의 줄임말입니다.
-- **FiK**는 사용자가 촬영지를 선택(Pick)하고, 그곳에서 특별한 사진(Pic)을 남길 수 있는 플랫폼입니다.
+**FiK**는 'Film In Korea'의 줄임말입니다.
+**FiK**는 사용자가 촬영지를 선택(Pick)하고, 그곳에서 특별한 사진(Pic)을 남길 수 있는 플랫폼입니다.
 
 ## 서비스 기능
 - 드라마/영화 촬영지 탐방 지원
