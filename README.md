@@ -35,7 +35,7 @@ FiK는 **K-콘텐츠 팬들**을 위해 드라마나 영화 촬영지를 탐방�
 
 ---
 
-![FiK 화면3](https://github.com/user-attachments/assets/75bc1903-8a8d-498d-bb1b-dcdfc9640211)  
+<img src="https://github.com/user-attachments/assets/75bc1903-8a8d-498d-bb1b-dcdfc9640211" width="300" alt="FiK 화면3" />
 “한국문화정보원_미디어콘텐츠 영상 촬영지” 데이터를 활용  
 신뢰할 수 있는 영화 촬영지 정보 제공
 
