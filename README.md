@@ -24,3 +24,8 @@ FiK는 **K-콘텐츠 팬들**을 위해 드라마나 영화 촬영지를 탐방�
 
 [<span style="font-size:2em;">Figma에서 디자인 보기</span>](https://www.figma.com/design/iWB7Vsyw31dtXfEzJ2lgtf/Tourisum--Traveling-Website-Landing-Page-(Community)?node-id=0-1&t=LnstbcAE90Ek68QK-1)  
 [<span style="font-size:2em;">PPT 보기</span>](https://www.canva.com/design/DAGSa6qMh08/Eq4iolPHyof-ODM4-EB00g/view?utm_content=DAGSa6qMh08&utm_campaign=designshare&utm_medium=link&utm_source=editor)
+
+
+
+
+<img src="https://github.com/user-attachments/assets/a96562a7-52bc-4b8e-804d-42d5c2006b72" align="left" width="300"/>
